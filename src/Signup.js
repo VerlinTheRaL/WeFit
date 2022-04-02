@@ -3,7 +3,51 @@ import 'bulma/css/bulma.min.css';
 import './fontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import { useState } from 'react'
+import { auth } from './firebase'
+import { useNavigate, Link } from 'react-router-dom'
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
+//import { useAuthValue } from './AuthContext'
+
 function Signup() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
+  //const {setTimeActive} = useAuthValue()
+
+  const validatePassword = () => {
+    const isValid = true
+    if (password !== '' && confirmPassword !== ''){
+      if (password !== confirmPassword) {
+        isValid = false
+        setError('Passwords do not match. Please try again.')
+      }
+    }
+    return isValid
+  }
+
+  const register = e => {
+    e.preventDefault()
+    setError('')
+    if(validatePassword()) {
+      // Create a new user with email and password using firebase
+        createUserWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          sendEmailVerification(auth.currentUser)   
+          .then(() => {
+            //setTimeActive(true)
+            navigate('/verify-email')
+          }).catch((err) => alert(err.message))
+        })
+        .catch(err => setError(err.message))
+    }
+    setEmail('')
+    setPassword('')
+    setConfirmPassword('')
+  }
+
   return (
     <div classname="main">
 
@@ -30,22 +74,29 @@ function Signup() {
               <div class="column is-5"></div>
 
               <div class="column is-7 has-text-centered">
-                <form id="login-form" class="box mx-6 my-6">
+                <form onSubmit={register} id="registration_form" name="registration_form" class="box mx-6 my-6">
                   <div class = "field">
                     <label class="label">Email</label>
                     <div class="control">
-                      <input class="input" type="text" name="email" placeholder="Your email, e.g., example@gmail.com" />
+                      <input class="input" type="email" name="email" placeholder="Your email, e.g., example@gmail.com" value={email} onChange={e => setEmail(e.target.value)}/>
                     </div>
                   </div>
 
                   <div class = "field">
                     <label class="label">Password</label>
                     <div class="control">
-                      <input class="input" type="password" name="password" id="password" placeholder="********"/>
+                      <input class="input" type="password" name="password" id="password" placeholder="********" value={password} onChange={e => setPassword(e.target.value)}/>
                     </div>
                   </div>
 
-                  <button class="button is-primary">
+                  <div class = "field">
+                    <label class="label">Confirm Password</label>
+                    <div class="control">
+                      <input class="input" type="password" name="confirm_password" id="confirm_password" placeholder="********" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}/>
+                    </div>
+                  </div>
+
+                  <button class="button is-primary" type="submit">
                     <strong>Sign up</strong>
                   </button>
                 </form>

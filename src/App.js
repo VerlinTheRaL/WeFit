@@ -4,8 +4,7 @@ import './App.css';
 import Landing from './Landing';
 import Signup from './Signup';
 import Login from './Login';
-
-import * as React from "react";
+import Dashboard from './Dashboard';
 
 import {
   BrowserRouter as Router,
@@ -23,6 +22,7 @@ function App() {
           <Route path="/landing" element={<Landing />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/" element={<Landing />} />
           <Route path="*" element={<Landing />} />
         </Routes>

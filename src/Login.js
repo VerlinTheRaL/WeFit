@@ -3,7 +3,7 @@ import 'bulma/css/bulma.min.css';
 import './fontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function Signup() {
+function Login() {
   return (
     <div classname="main">
 
@@ -58,4 +58,4 @@ function Signup() {
   );
 }
 
-export default Signup;
+export default Login;
