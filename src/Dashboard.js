@@ -3,11 +3,25 @@ import 'bulma/css/bulma.min.css';
 import './fontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-function Dashboard() {
-  return (
-    <div classname="main">
+import { useAuthValue } from './AuthContext'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
+import { auth } from './firebase'
+import { Navigate } from 'react-router-dom'
 
-      <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+function Dashboard() {
+  const { currentUser } = useAuthValue();
+
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      console.log("Not logged in")
+    }
+  });
+
+  return (
+    <div className="main">
+
+      <nav class="navbar is-light" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
           <a class="navbar-item" href="/">
             <FontAwesomeIcon icon="fa-solid fa-dumbbell" /> &nbsp; <strong>WeFit</strong>
@@ -17,7 +31,14 @@ function Dashboard() {
         <div class="navbar-menu">
           <div class="navbar-end">
             <div class="navbar-item">
-              <strong>Dashboard</strong>
+              <strong>Dashboard: { currentUser?.email }</strong>
+            </div>
+            <div class="navbar-item">
+              <div class="buttons">
+                <a class="button is-danger" onClick={ () => signOut(auth) } href="/login">
+                  <strong>Sign out</strong>
+                </a>
+              </div>
             </div>
           </div>
         </div>

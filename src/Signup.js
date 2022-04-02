@@ -5,9 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { useState } from 'react'
 import { auth } from './firebase'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
-//import { useAuthValue } from './AuthContext'
 
 function Signup() {
   const [email, setEmail] = useState('')
@@ -15,7 +14,6 @@ function Signup() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
-  //const {setTimeActive} = useAuthValue()
 
   const validatePassword = () => {
     const isValid = true
@@ -28,18 +26,14 @@ function Signup() {
     return isValid
   }
 
-  const register = e => {
-    e.preventDefault()
+  const register = event => {
+    event.preventDefault()
     setError('')
     if(validatePassword()) {
       // Create a new user with email and password using firebase
         createUserWithEmailAndPassword(auth, email, password)
         .then(() => {
-          sendEmailVerification(auth.currentUser)   
-          .then(() => {
-            //setTimeActive(true)
-            navigate('/verify-email')
-          }).catch((err) => alert(err.message))
+          navigate('/dashboard')
         })
         .catch(err => setError(err.message))
     }
@@ -78,21 +72,21 @@ function Signup() {
                   <div class = "field">
                     <label class="label">Email</label>
                     <div class="control">
-                      <input class="input" type="email" name="email" placeholder="Your email, e.g., example@gmail.com" value={email} onChange={e => setEmail(e.target.value)}/>
+                      <input class="input" type="email" name="email" placeholder="Your email, e.g., example@gmail.com" value={email} onChange={event => setEmail(event.target.value)}/>
                     </div>
                   </div>
 
                   <div class = "field">
                     <label class="label">Password</label>
                     <div class="control">
-                      <input class="input" type="password" name="password" id="password" placeholder="********" value={password} onChange={e => setPassword(e.target.value)}/>
+                      <input class="input" type="password" name="password" id="password" placeholder="********" value={password} onChange={event => setPassword(event.target.value)}/>
                     </div>
                   </div>
 
                   <div class = "field">
                     <label class="label">Confirm Password</label>
                     <div class="control">
-                      <input class="input" type="password" name="confirm_password" id="confirm_password" placeholder="********" value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)}/>
+                      <input class="input" type="password" name="confirm_password" id="confirm_password" placeholder="********" value={confirmPassword} onChange={event => setConfirmPassword(event.target.value)}/>
                     </div>
                   </div>
 

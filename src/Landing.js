@@ -23,10 +23,10 @@ function Landing() {
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="buttons">
-                <a class="button is-primary" href="signup">
+                <a class="button is-primary" href="/signup">
                   <strong>Sign up</strong>
                 </a>
-                <a class="button is-info" href="login">
+                <a class="button is-info" href="/login">
                   <strong>Log in</strong>
                 </a>
               </div>
