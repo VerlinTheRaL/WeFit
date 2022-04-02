@@ -23,10 +23,10 @@ function Landing() {
           <div class="navbar-end">
             <div class="navbar-item">
               <div class="buttons">
-                <a class="button is-primary">
+                <a class="button is-primary" href="signup">
                   <strong>Sign up</strong>
                 </a>
-                <a class="button is-info">
+                <a class="button is-info" href="login">
                   <strong>Log in</strong>
                 </a>
               </div>
@@ -42,9 +42,9 @@ function Landing() {
               JOIN THE FITNESS MOVEMENT
             </h2>
             <h1 class="title is-1 is-spaced my-3">
-              Friends that <br/> Sweat Together <br/> Stay Together
+              Friends That <br/> Sweat Together <br/> Stay Together
             </h1>
-            <a href="/" class="button is-primary my-6"> <strong> Try WeFit now! &nbsp; </strong> <FontAwesomeIcon icon="fa-solid fa-person-running" /> </a>
+            <a href="/signup" class="button is-primary my-6"> <strong> Try WeFit now! &nbsp; </strong> <FontAwesomeIcon icon="fa-solid fa-person-running" /> </a>
           </div>
         </div>
       </section>
@@ -121,7 +121,7 @@ function Landing() {
             <h1 class="title is-1 is-spaced">
               The best project you'll ever work on is YOU
             </h1>
-            <a href="/" class="button is-primary my-3"> <strong> Try WeFit now! &nbsp; </strong> <FontAwesomeIcon icon="fa-solid fa-person-running" /> </a>
+            <a href="/signup" class="button is-primary my-3"> <strong> Try WeFit now! &nbsp; </strong> <FontAwesomeIcon icon="fa-solid fa-person-running" /> </a>
           </div>
         </div>
       </section>
