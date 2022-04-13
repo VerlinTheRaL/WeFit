@@ -41,6 +41,9 @@ function Dashboard({ user: loggedInUser }) {
               </div>
               <div class="navbar-item">
                 <div class="buttons">
+                  <a class="button is-info" href="/profile">
+                    <strong>Profile</strong>
+                  </a>
                   <a class="button is-danger" onClick={() => signOut(auth)} href="/login">
                     <strong>Sign out</strong>
                   </a>

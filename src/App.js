@@ -10,6 +10,7 @@ import Landing from './Landing';
 import Signup from './Signup';
 import Login from './Login';
 import Dashboard from './Dashboard';
+import Profile from './Profile'
 
 import {
   BrowserRouter as Router,
@@ -40,6 +41,7 @@ function App() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route path='/dashboard' element={<Dashboard user={user} />} />
+            <Route path='/profile' element={<Profile user={user} />} />
             <Route path="/" element={<Landing />} />
             <Route path="*" element={<Landing />} />
           </Routes>
