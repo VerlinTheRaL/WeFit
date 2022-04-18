@@ -2,6 +2,10 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
+import Firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+
 import { seedDatabase } from "./seed";
 
 // wefit config
@@ -19,7 +23,9 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+const firebase = Firebase.initializeApp(firebaseConfig);
+const { FieldValue } = Firebase.firestore;
+
 // This only needs to be ran once to manually add some test users to db
 // seedDatabase(db);
-
-export { app, auth, db };
+export { app, auth, db, firebase, FieldValue };

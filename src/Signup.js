@@ -3,12 +3,18 @@ import 'bulma/css/bulma.min.css';
 import './fontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import { useState } from 'react'
+import FirebaseContext from './context/firebase';
+import { doesUsernameExist } from './services/firebase';
+import { useState, useContext } from 'react'
 import { auth } from './firebase'
 import { useNavigate } from 'react-router-dom'
-import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth'
 
 function Signup() {
+  const { firebase } = useContext(FirebaseContext);
+
+  const [username, setUsername] = useState('')
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -26,20 +32,65 @@ function Signup() {
     return isValid
   }
 
-  const register = event => {
-    event.preventDefault()
-    setError('')
+  const register = async(event) => {
+    event.preventDefault();
+    setError('');
+    const usernameExists = await doesUsernameExist(username);
     if(validatePassword()) {
-      // Create a new user with email and password using firebase
-        createUserWithEmailAndPassword(auth, email, password)
-        .then(() => {
+      if (!usernameExists) {
+        try {
+            // Create a new user with email and password using firebase
+          // const createdUserResult = await createUserWithEmailAndPassword(auth, email, password)
+          // .then(() => {
+          //   navigate('/dashboard')
+          // })
+          // .catch(err => setError(err.message))
+
+          // const createdUserResult = await app
+          //   .auth()
+          //   .createUserWithEmailAndPassword(email, password);
+
+          const createdUserResult = await createUserWithEmailAndPassword(auth, email, password)
+  
+          // authentication
+          // -> emailAddress & password & username (displayName)
+          // await auth.currentUser.updateProfile({
+          //   displayName: username
+          // });
+
+          await updateProfile(auth.currentUser, {
+            displayName: username
+          });
+  
+          // firebase user collection (create a document)
+          await firebase
+            .firestore()
+            .collection('users')
+            .add({
+              userId: auth.currentUser.uid,
+              username: username.toLowerCase(),
+              fullName,
+              emailAddress: email.toLowerCase(),
+              following: ['2'],
+              followers: [],
+              dateCreated: Date.now()
+            });
+          
           navigate('/dashboard')
-        })
-        .catch(err => setError(err.message))
+  
+        } catch (error) {
+          setFullName('');
+          setEmail('');
+          setPassword('');
+          setConfirmPassword('')
+          console.log(error);
+          setError(error.message);
+        }
+      } else {
+        setUsername('');
+        setError('That username is already taken, please try another.');
+      }
     }
-    setEmail('')
-    setPassword('')
-    setConfirmPassword('')
   }
 
   return (
@@ -68,7 +119,22 @@ function Signup() {
               <div class="column is-5"></div>
 
               <div class="column is-7 has-text-centered">
+                {error && <p className="mb-4 text-s text-red-primary">{error}</p>}
                 <form onSubmit={register} id="registration_form" name="registration_form" class="box mx-6 my-6">
+                  <div class = "field">
+                      <label class="label">Username</label>
+                      <div class="control">
+                        <input class="input" type="username" name="username" placeholder="Your username" value={username} onChange={event => setUsername(event.target.value)}/>
+                      </div>
+                  </div>
+
+                  <div class = "field">
+                      <label class="label">FullName</label>
+                      <div class="control">
+                        <input class="input" type="fullname" name="fullname" placeholder="Your full name" value={fullName} onChange={event => setFullName(event.target.value)}/>
+                      </div>
+                  </div>
+
                   <div class = "field">
                     <label class="label">Email</label>
                     <div class="control">

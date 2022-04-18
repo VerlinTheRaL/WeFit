@@ -14,7 +14,7 @@ function Login() {
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
-  const login = event => {
+  const login = async(event) => {
     event.preventDefault()
     signInWithEmailAndPassword(auth, email, password)
     .then(() => {
