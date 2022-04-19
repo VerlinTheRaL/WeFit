@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import './styles/app.css';
 import FirebaseContext from './context/firebase';
 
-import { app, db, firebase, FieldValue } from './firebase'
+import { app, db } from './firebase'
 
 const container = document.getElementById('root');
 
@@ -14,7 +14,7 @@ const root = ReactDOMClient.createRoot(container);
 
 root.render(
 
-  <FirebaseContext.Provider value={{ app, db, firebase, FieldValue }}>
+  <FirebaseContext.Provider value={{ app, db }}>
     <App />
   </FirebaseContext.Provider>,
 );

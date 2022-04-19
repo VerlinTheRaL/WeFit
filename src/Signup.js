@@ -3,16 +3,14 @@ import 'bulma/css/bulma.min.css';
 import './fontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import FirebaseContext from './context/firebase';
 import { doesUsernameExist } from './services/firebase';
-import { useState, useContext } from 'react'
-import { auth } from './firebase'
+import { useState } from 'react'
+import { auth, db } from './firebase'
 import { useNavigate } from 'react-router-dom'
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth'
+import { collection, addDoc } from "firebase/firestore"; 
 
 function Signup() {
-  const { firebase } = useContext(FirebaseContext);
-
   const [username, setUsername] = useState('')
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('')
@@ -50,7 +48,7 @@ function Signup() {
           //   .auth()
           //   .createUserWithEmailAndPassword(email, password);
 
-          const createdUserResult = await createUserWithEmailAndPassword(auth, email, password)
+          await createUserWithEmailAndPassword(auth, email, password);
   
           // authentication
           // -> emailAddress & password & username (displayName)
@@ -63,10 +61,8 @@ function Signup() {
           });
   
           // firebase user collection (create a document)
-          await firebase
-            .firestore()
-            .collection('users')
-            .add({
+          await addDoc(collection(db, 'users'),
+            {
               userId: auth.currentUser.uid,
               username: username.toLowerCase(),
               fullName,
