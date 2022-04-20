@@ -12,16 +12,21 @@ import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
 // import { Navigate } from 'react-router-dom'
 
 import Timeline from './components/timeline';
+import Sidebar from './components/sidebar';
 import usePhotos from './hooks/use-photos';
+import UserContext from './context/user';
 import useUser from './hooks/use-user';
 // import LoggedInUserContext from '../context/logged-in-user';
 import LoggedInUserContext from './context/logged-in-user';
+import { useNavigate } from 'react-router-dom'
 
-function Dashboard({ user: loggedInUser }) {
+function Dashboard() {
+  const { user: loggedInUser } = useContext(UserContext);
   // console.log('check user id: ', loggedInUser.uid)
-  const { user, setActiveUser } = useUser(loggedInUser.uid);
+  const { user, setActiveUser } = useUser(loggedInUser?.uid);
   // console.log('check user: ', user)
   const auth = getAuth();
+  const navigate = useNavigate()
 
   return (
     <LoggedInUserContext.Provider value={{ user, setActiveUser }}>
@@ -39,22 +44,36 @@ function Dashboard({ user: loggedInUser }) {
               <div class="navbar-item">
                 <strong>Dashboard: {user?.email}</strong>
               </div>
-              <div class="navbar-item">
-                <div class="buttons">
-                  <a class="button is-info" href="/profile">
-                    <strong>Profile</strong>
-                  </a>
-                  <a class="button is-danger" onClick={() => signOut(auth)} href="/login">
-                    <strong>Sign out</strong>
-                  </a>
+              {user ? (
+                <div class="navbar-item">
+                  <div class="buttons">
+                    <a class="button is-info" href="/profile">
+                      <strong>Profile</strong>
+                    </a>
+                    <a class="button is-danger" onClick={() => signOut(auth)} href="/login">
+                      <strong>Sign out</strong>
+                    </a>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div class="navbar-item">
+                  <div class="buttons">
+                    <a class="button is-info" href="/login">
+                      <strong>Login</strong>
+                    </a>
+                    <a class="button is-primary" href="/signup">
+                      <strong>Sign up</strong>
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </nav>
 
         <div className="grid grid-cols-3 gap-4 justify-between mx-auto max-w-screen-lg">
           <Timeline />
+          <Sidebar />
         </div>
 
       </div>
