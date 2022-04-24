@@ -2,6 +2,8 @@ import { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import FirebaseContext from '../../context/firebase';
 import UserContext from '../../context/user';
+import { db } from '../../firebase';
+import { collection, query, where, limit, getDocs, doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 
 export default function AddComment({ docId, comments, setComments, commentInput }) {
   const [comment, setComment] = useState('');
@@ -16,13 +18,11 @@ export default function AddComment({ docId, comments, setComments, commentInput 
     setComments([...comments, { displayName, comment }]);
     setComment('');
 
-    return firebase
-      .firestore()
-      .collection('photos')
-      .doc(docId)
-      .update({
-        comments: FieldValue.arrayUnion({ displayName, comment })
-      });
+    const PhotosRef = doc(db, "photos", docId);
+    return updateDoc(PhotosRef, {
+      comments:
+        arrayUnion({ displayName, comment })
+    });
   };
 
   return (
