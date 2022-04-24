@@ -1,6 +1,9 @@
 import { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import FirebaseContext from '../../context/firebase';
+import { db } from '../../firebase';
+import { collection, query, where, limit, getDocs, doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+
 import UserContext from '../../context/user';
 
 export default function Actions({ docId, totalLikes, likedPhoto, handleFocus }) {
@@ -14,13 +17,12 @@ export default function Actions({ docId, totalLikes, likedPhoto, handleFocus }) 
   const handleToggleLiked = async () => {
     setToggleLiked((toggleLiked) => !toggleLiked);
 
-    await firebase
-      .firestore()
-      .collection('photos')
-      .doc(docId)
-      .update({
-        likes: toggleLiked ? FieldValue.arrayRemove(userId) : FieldValue.arrayUnion(userId)
-      });
+    const PhotosRef = doc(db, "photos", docId);
+    await updateDoc(PhotosRef, {
+      likes: toggleLiked ?
+        arrayRemove(userId) :
+        arrayUnion(userId)
+    });
 
     setLikes((likes) => (toggleLiked ? likes - 1 : likes + 1));
   };
@@ -41,9 +43,8 @@ export default function Actions({ docId, totalLikes, likedPhoto, handleFocus }) 
             viewBox="0 0 24 24"
             stroke="currentColor"
             tabIndex={0}
-            className={`w-8 mr-4 select-none cursor-pointer focus:outline-none ${
-              toggleLiked ? 'fill-red text-red-primary' : 'text-black-light'
-            }`}
+            className={`w-8 mr-4 select-none cursor-pointer focus:outline-none ${toggleLiked ? 'fill-red text-red-primary' : 'text-black-light'
+              }`}
           >
             <path
               strokeLinecap="round"
