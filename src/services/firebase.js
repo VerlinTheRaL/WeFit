@@ -1,5 +1,5 @@
 import { db } from '../firebase';
-import { collection, query, where, limit, getDocs, doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import { collection, query, where, limit, getDocs, doc, updateDoc, arrayUnion, arrayRemove, orderBy } from "firebase/firestore";
 
 export async function doesUsernameExist(username) {
   const result = query(collection(db, 'users'), where('username', '==', username.toLowerCase()));
@@ -42,7 +42,7 @@ export async function getSuggestedProfiles(userId, following) {
   // // const result = await query.limit(10).get();
   // const result = query(collection(db, 'users'), limit(10));
   // const q_doc = await getDocs(result)
-  
+
   let useRef = collection(db, 'users');
 
   if (following.length > 0) {
@@ -103,7 +103,8 @@ export async function updateFollowedUserFollowers(
 
 export async function getPhotos(userId, following) {
   // [5,4,2] => following
-  const result = query(collection(db, 'photos'), where('userId', 'in', following));
+  // PX: TODO: verify the order
+  const result = query(collection(db, 'photos'), where('userId', 'in', following), orderBy("dateCreated", "desc"));
   const q_doc = await getDocs(result)
   // console.log('check query photo: ', q_doc)
   const userFollowedPhotos = q_doc.docs.map((photo) => ({

@@ -17,6 +17,7 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import { RecoilRoot } from 'recoil';
 
 function App() {
   // const [currentUser, setCurrentUser] = useState(null)
@@ -33,20 +34,22 @@ function App() {
   return (
     <div className="main">
       <UserContext.Provider value={{ user }}>
-        <Router>
-          {/* <AuthProvider value={{ currentUser }}> */}
-          <Routes>
-            <Route index element={<Landing />} />
-            <Route path="/landing" element={<Landing />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path='/dashboard' element={<Dashboard user={user} />} />
-            <Route path='/profile' element={<Profile user={user} />} />
-            <Route path="/" element={<Landing />} />
-            <Route path="*" element={<Landing />} />
-          </Routes>
-          {/* </AuthProvider> */}
-        </Router>
+        <RecoilRoot>
+          <Router>
+            {/* <AuthProvider value={{ currentUser }}> */}
+            <Routes>
+              <Route index element={<Landing />} />
+              <Route path="/landing" element={<Landing />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+              <Route path='/dashboard' element={<Dashboard user={user} />} />
+              <Route path='/profile' element={<Profile user={user} />} />
+              <Route path="/" element={<Landing />} />
+              <Route path="*" element={<Landing />} />
+            </Routes>
+            {/* </AuthProvider> */}
+          </Router>
+        </RecoilRoot>
       </UserContext.Provider>
     </div>
   );

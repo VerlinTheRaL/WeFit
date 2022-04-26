@@ -18,7 +18,17 @@ import UserContext from './context/user';
 import useUser from './hooks/use-user';
 // import LoggedInUserContext from '../context/logged-in-user';
 import LoggedInUserContext from './context/logged-in-user';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+
+import {
+  PlusCircleIcon,
+  HomeIcon,
+  CameraIcon,
+} from "@heroicons/react/solid";
+
+import { useRecoilState } from "recoil";
+import { modalState } from "./atoms/modal-atom";
+import Modal from "./components/modal";
 
 function Dashboard() {
   const { user: loggedInUser } = useContext(UserContext);
@@ -26,7 +36,8 @@ function Dashboard() {
   const { user, setActiveUser } = useUser(loggedInUser?.uid);
   // console.log('check user: ', user)
   const auth = getAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [open, setOpen] = useRecoilState(modalState);
 
   return (
     <LoggedInUserContext.Provider value={{ user, setActiveUser }}>
@@ -41,6 +52,8 @@ function Dashboard() {
 
           <div class="navbar-menu">
             <div class="navbar-end">
+              <CameraIcon className="h-15 w-8" onClick={() => setOpen(true)} />
+
               <div class="navbar-item">
                 <strong>Dashboard: {user?.email}</strong>
               </div>
@@ -72,8 +85,10 @@ function Dashboard() {
         </nav>
 
         <div className="grid grid-cols-3 gap-4 justify-between mx-auto max-w-screen-lg">
+
           <Timeline />
           <Sidebar />
+          <Modal />
         </div>
 
       </div>
