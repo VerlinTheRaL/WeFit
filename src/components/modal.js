@@ -49,7 +49,7 @@ function Modal() {
             distance: distanceRef.current.value,
             duration: durationRef.current.value,
             // profileImg: auth.currentUser.imageSrc,
-            dateCreated: Date.now()
+            dateCreated: serverTimestamp()
         })
 
         console.log("New doc added with ID", docRef.id);
