@@ -5,6 +5,7 @@ import { AuthProvider } from './AuthContext'
 
 import UserContext from './context/user';
 import useAuthListener from './hooks/use-auth-listener';
+import ProtectedRoute from './helpers/protected-route';
 
 import Landing from './Landing';
 import Signup from './Signup';
@@ -42,8 +43,10 @@ function App() {
               <Route path="/landing" element={<Landing />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
-              <Route path='/dashboard' element={<Dashboard user={user} />} />
-              <Route path='/profile' element={<Profile user={user} />} />
+              <Route path='/dashboard' element = {<ProtectedRoute user={user}/>}>
+                <Route path="/dashboard" element={<Dashboard user={user}/>} />
+              </Route>
+              <Route path='/p/:username' element={<Profile user={user} />} />
               <Route path="/" element={<Landing />} />
               <Route path="*" element={<Landing />} />
             </Routes>

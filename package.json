@@ -26,6 +26,7 @@
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
     "react-bootstrap": "^2.2.3",
+    "react-bulma-chartjs": "^0.0.6",
     "react-dom": "^18.0.0",
     "react-firebase-hooks": "^5.0.3",
     "react-loading-skeleton": "^3.1.0",
