@@ -121,6 +121,7 @@ export async function getPhotos(userId, following) {
       // photo.userId = 2
       const user = await getUserByUserId(photo.userId);
       // raphael
+      // user[0]: first user in array
       const { username } = user[0];
       return { username, ...photo, userLikedPhoto };
     })
@@ -140,10 +141,13 @@ export async function getUserPhotosByUserId(userId) {
 }
 
 export async function isUserFollowingProfile(loggedInUserUsername, profileUserId) {
+  // const result = query(collection(db, 'users')
+  //   .where('username', '==', loggedInUserUsername) // karl (active logged in user)
+  //   .where('following', 'array-contains', profileUserId)
+  //   .get());
   const result = query(collection(db, 'users')
-    .where('username', '==', loggedInUserUsername) // karl (active logged in user)
-    .where('following', 'array-contains', profileUserId)
-    .get());
+    ,where('username', '==', loggedInUserUsername) // karl (active logged in user)
+    ,where('following', 'array-contains', profileUserId));
   const q_doc = await getDocs(result)
   const [response = {}] = q_doc.docs.map((item) => ({
     ...item.data(),

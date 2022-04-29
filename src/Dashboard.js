@@ -60,7 +60,7 @@ function Dashboard() {
               {user ? (
                 <div class="navbar-item">
                   <div class="buttons">
-                    <a class="button is-info" href="/profile">
+                    <a class="button is-info" href={`/p/${user.username}`}>
                       <strong>Profile</strong>
                     </a>
                     <a class="button is-danger" onClick={() => signOut(auth)} href="/login">
