@@ -3,12 +3,16 @@ import 'bulma/css/bulma.min.css';
 import './fontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import { doesUsernameExist } from './services/firebase';
 import { useState } from 'react'
-import { auth } from './firebase'
+import { auth, db } from './firebase'
 import { useNavigate } from 'react-router-dom'
-import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth'
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth'
+import { collection, addDoc } from "firebase/firestore";
 
 function Signup() {
+  const [username, setUsername] = useState('')
+  const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -17,7 +21,7 @@ function Signup() {
 
   const validatePassword = () => {
     const isValid = true
-    if (password !== '' && confirmPassword !== ''){
+    if (password !== '' && confirmPassword !== '') {
       if (password !== confirmPassword) {
         isValid = false
         setError('Passwords do not match. Please try again.')
@@ -26,20 +30,63 @@ function Signup() {
     return isValid
   }
 
-  const register = event => {
-    event.preventDefault()
-    setError('')
-    if(validatePassword()) {
-      // Create a new user with email and password using firebase
-        createUserWithEmailAndPassword(auth, email, password)
-        .then(() => {
+  const register = async (event) => {
+    event.preventDefault();
+    setError('');
+    const usernameExists = await doesUsernameExist(username);
+    if (validatePassword()) {
+      if (!usernameExists) {
+        try {
+          // Create a new user with email and password using firebase
+          // const createdUserResult = await createUserWithEmailAndPassword(auth, email, password)
+          // .then(() => {
+          //   navigate('/dashboard')
+          // })
+          // .catch(err => setError(err.message))
+
+          // const createdUserResult = await app
+          //   .auth()
+          //   .createUserWithEmailAndPassword(email, password);
+
+          await createUserWithEmailAndPassword(auth, email, password);
+
+          // authentication
+          // -> emailAddress & password & username (displayName)
+          // await auth.currentUser.updateProfile({
+          //   displayName: username
+          // });
+
+          await updateProfile(auth.currentUser, {
+            displayName: username
+          });
+
+          // firebase user collection (create a document)
+          await addDoc(collection(db, 'users'),
+            {
+              userId: auth.currentUser.uid,
+              username: username.toLowerCase(),
+              fullName,
+              emailAddress: email.toLowerCase(),
+              following: ['2'],
+              followers: [],
+              dateCreated: Date.now()
+            });
+
           navigate('/dashboard')
-        })
-        .catch(err => setError(err.message))
+
+        } catch (error) {
+          setFullName('');
+          setEmail('');
+          setPassword('');
+          setConfirmPassword('')
+          console.log(error);
+          setError(error.message);
+        }
+      } else {
+        setUsername('');
+        setError('That username is already taken, please try another.');
+      }
     }
-    setEmail('')
-    setPassword('')
-    setConfirmPassword('')
   }
 
   return (
@@ -61,32 +108,47 @@ function Signup() {
         </div>
       </nav>
 
-      <section class="hero is-light is-fullheight-with-navbar" style={{backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)), url(https://images.unsplash.com/photo-1594911772125-07fc7a2d8d9f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80)', backgroundSize: 'cover'}}>
+      <section class="hero is-light is-fullheight-with-navbar" style={{ backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)), url(https://images.unsplash.com/photo-1594911772125-07fc7a2d8d9f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80)', backgroundSize: 'cover' }}>
         <div class="hero-body">
           <div class="container">
             <div class="columns is-vcentered is-centered">
               <div class="column is-5"></div>
 
               <div class="column is-7 has-text-centered">
+                {error && <p className="mb-4 text-s text-red-primary">{error}</p>}
                 <form onSubmit={register} id="registration_form" name="registration_form" class="box mx-6 my-6">
-                  <div class = "field">
+                  <div class="field">
+                    <label class="label">Username</label>
+                    <div class="control">
+                      <input class="input" type="username" name="username" placeholder="Your username" value={username} onChange={event => setUsername(event.target.value)} />
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">FullName</label>
+                    <div class="control">
+                      <input class="input" type="fullname" name="fullname" placeholder="Your full name" value={fullName} onChange={event => setFullName(event.target.value)} />
+                    </div>
+                  </div>
+
+                  <div class="field">
                     <label class="label">Email</label>
                     <div class="control">
-                      <input class="input" type="email" name="email" placeholder="Your email, e.g., example@gmail.com" value={email} onChange={event => setEmail(event.target.value)}/>
+                      <input class="input" type="email" name="email" placeholder="Your email, e.g., example@gmail.com" value={email} onChange={event => setEmail(event.target.value)} />
                     </div>
                   </div>
 
-                  <div class = "field">
+                  <div class="field">
                     <label class="label">Password</label>
                     <div class="control">
-                      <input class="input" type="password" name="password" id="password" placeholder="********" value={password} onChange={event => setPassword(event.target.value)}/>
+                      <input class="input" type="password" name="password" id="password" placeholder="********" value={password} onChange={event => setPassword(event.target.value)} />
                     </div>
                   </div>
 
-                  <div class = "field">
+                  <div class="field">
                     <label class="label">Confirm Password</label>
                     <div class="control">
-                      <input class="input" type="password" name="confirm_password" id="confirm_password" placeholder="********" value={confirmPassword} onChange={event => setConfirmPassword(event.target.value)}/>
+                      <input class="input" type="password" name="confirm_password" id="confirm_password" placeholder="********" value={confirmPassword} onChange={event => setConfirmPassword(event.target.value)} />
                     </div>
                   </div>
 

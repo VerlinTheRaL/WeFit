@@ -1,43 +1,59 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import { auth } from './firebase'
 import { onAuthStateChanged } from 'firebase/auth'
 import { AuthProvider } from './AuthContext'
+
+import UserContext from './context/user';
+import useAuthListener from './hooks/use-auth-listener';
+import ProtectedRoute from './helpers/protected-route';
 
 import Landing from './Landing';
 import Signup from './Signup';
 import Login from './Login';
 import Dashboard from './Dashboard';
+import Profile from './Profile'
 
 import {
   BrowserRouter as Router,
   Routes,
   Route,
 } from "react-router-dom";
+import { RecoilRoot } from 'recoil';
 
 function App() {
-  const [currentUser, setCurrentUser] = useState(null)
+  // const [currentUser, setCurrentUser] = useState(null)
 
-  useEffect( () => {
-    onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user)
-    })
-  }, [])
+  const { user } = useAuthListener();
+  // console.log('check auth user: ', user);
+
+  // useEffect(() => {
+  //   onAuthStateChanged(auth, (user) => {
+  //     setCurrentUser(user)
+  //   })
+  // }, [])
 
   return (
     <div className="main">
-      <Router>
-        <AuthProvider value={{ currentUser }}>
-          <Routes>
-            <Route index element={<Landing />} />
-            <Route path="/landing" element={<Landing />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path='/dashboard' element={<Dashboard />} />
-            <Route path="/" element={<Landing />} />
-            <Route path="*" element={<Landing />} />
-          </Routes>
-        </AuthProvider>
-      </Router>
+      <UserContext.Provider value={{ user }}>
+        <RecoilRoot>
+          <Router>
+            {/* <AuthProvider value={{ currentUser }}> */}
+            <Routes>
+              <Route index element={<Landing />} />
+              <Route path="/landing" element={<Landing />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+              <Route path='/dashboard' element = {<ProtectedRoute user={user}/>}>
+                <Route path="/dashboard" element={<Dashboard user={user}/>} />
+              </Route>
+              <Route path='/p/:username' element={<Profile user={user} />} />
+              <Route path="/" element={<Landing />} />
+              <Route path="*" element={<Landing />} />
+            </Routes>
+            {/* </AuthProvider> */}
+          </Router>
+        </RecoilRoot>
+      </UserContext.Provider>
     </div>
   );
   /*
