@@ -140,6 +140,110 @@ export async function getUserPhotosByUserId(userId) {
   return photos;
 }
 
+export function getMondayOfCurrentWeek() {
+  const today = new Date();
+  const first = today.getDate() - today.getDay() + 1;
+
+  const monday = new Date(today.setDate(first));
+  return monday;
+}
+
+export async function getUserFitsByUserId(userId) {
+  const result = query(collection(db, 'fitness'), where('userId', '==', userId));
+  const q_doc = await getDocs(result)
+  // const fits = q_doc.docs.map((fit) => ({
+  //   ...fit.data(),
+  //   docId: fit.id
+  // }));
+  const Monday = getMondayOfCurrentWeek();
+  const fits = q_doc.docs.filter(fit => fit.data().dateCreated.toDate() > Monday.getTime()).map((fit) => ({
+    ...fit.data(),
+    docId: fit.id
+  }));
+  // console.log('today', a);
+  // console.log('Monday', b);
+  // console.log('whether date pass', a.getTime() > b.getTime());
+  return fits;
+}
+
+export async function CountCalorie(user, fits) {
+    var sum = 0;
+    var MET = 0;
+    var BodyWeight = 70;
+    if (user?.weight) {
+      BodyWeight = parseFloat(user.weight);
+    }
+    fits.map((fit) => {
+        switch(fit.sportsType) {
+          case 'Bicycling':
+            if (fit.distance / fit.duration > 0.33) {
+              MET = 16.0
+            }
+            else if (fit.distance / fit.duration > 0.27) {
+              MET = 12.0
+            }
+            else if (fit.distance / fit.duration > 0.23) {
+              MET = 10.0
+            }
+            else {
+              MET = 8.0
+            }
+            break;
+          case 'Jogging':
+            MET = 8;
+            break;
+          case 'Walking':
+            if (fit.duration / fit.distance > 20) {
+              MET = 3.3
+            }
+            else if (fit.duration / fit.distance > 15) {
+              MET = 3.8
+            }
+            else {
+              MET = 5.0
+            }
+            break;
+          case 'Running':
+            if (fit.duration / fit.distance > 10) {
+              MET = 10.0
+            }
+            else if (fit.duration / fit.distance > 9) {
+              MET = 11.0
+            }
+            else if (fit.duration / fit.distance > 8) {
+              MET = 12.5
+            }
+            else {
+              MET = 14.0
+            }
+            break;
+        }
+        sum = sum + parseFloat(fit.duration) * MET * BodyWeight / 200;
+    }
+    )
+    return sum
+}
+
+export async function CountLikes(photos) {
+  if (photos){
+      var cnt = 0;
+      const Monday = getMondayOfCurrentWeek();
+      photos.filter(photo => new Date(photo.dateCreated).getTime() > Monday.getTime()).map((photo) => (
+          cnt = cnt + photo.likes.length
+          )
+      )
+      return cnt
+  };
+}
+
+export async function CountPhotos(photos) {
+  if (photos){
+      const Monday = getMondayOfCurrentWeek();
+      const weekly_photos = photos.filter(photo => new Date(photo.dateCreated).getTime() > Monday.getTime());
+      return weekly_photos.length
+  };
+}
+
 export async function isUserFollowingProfile(loggedInUserUsername, profileUserId) {
   // const result = query(collection(db, 'users')
   //   .where('username', '==', loggedInUserUsername) // karl (active logged in user)

@@ -31,7 +31,6 @@ export default function Profile() {
 
         checkUserExists();
     }, [username, navigate]);
-    console.log('user', user);
 
     return user?.username ? (
         <>

@@ -13,6 +13,7 @@ import { collection, addDoc } from "firebase/firestore";
 function Signup() {
   const [username, setUsername] = useState('')
   const [fullName, setFullName] = useState('');
+  const [weight, setWeight] = useState('');
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -66,6 +67,7 @@ function Signup() {
               userId: auth.currentUser.uid,
               username: username.toLowerCase(),
               fullName,
+              weight,
               emailAddress: email.toLowerCase(),
               following: ['2'],
               followers: [],
@@ -76,6 +78,7 @@ function Signup() {
 
         } catch (error) {
           setFullName('');
+          setWeight('');
           setEmail('');
           setPassword('');
           setConfirmPassword('')
@@ -128,6 +131,13 @@ function Signup() {
                     <label class="label">FullName</label>
                     <div class="control">
                       <input class="input" type="fullname" name="fullname" placeholder="Your full name" value={fullName} onChange={event => setFullName(event.target.value)} />
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">Weight</label>
+                    <div class="control">
+                      <input class="input" type="weight" name="weight" placeholder="Your weight in kilograms" value={weight} onChange={event => setWeight(event.target.value)} />
                     </div>
                   </div>
 

@@ -1,9 +1,8 @@
 import 'bulma/css/bulma.min.css';
 import React from 'react';
 import Chart from 'react-bulma-chartjs';
-import { useState, useEffect} from 'react';
 
-export default function Scores({ photos }) {
+export default function Scores({ calories, activity, popularity }) {
     function getWeekNumber(d) {
         // Copy date so don't modify original
         d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
@@ -18,33 +17,41 @@ export default function Scores({ photos }) {
         return [d.getUTCFullYear(), weekNo];
     };
 
-
-    function CountLikes(photos) {
-        if (photos){
-            var cnt = 0;
-            photos.map((photo) => (
-                cnt = cnt + photo.likes.length
-                )
-            )
-            return cnt
-        };
+    if (!calories){
+        console.log('helper', 'no caloroies');
     }
 
-    function CountPhotos(photos) {
-        if (photos){
-            return photos.length
-        };
+    const calorie_progress = calories / 500;
+    const activity_progress = activity / 10;
+    const popularity_progress = popularity / 10;
+    const total = calorie_progress + activity_progress + popularity_progress;
+    const min = Math.min(calorie_progress, activity_progress, popularity_progress);
+    var weakness = 'Null';
+    switch (min){
+        case popularity_progress:
+            weakness = 'Popularity of posts';
+            break;
+        case activity_progress:
+            weakness = 'Exercise frequency';
+            break;
+        case calorie_progress:
+            weakness = 'Calorie burned during exercise';
+            break;
+        default:
+            weakness = 'Nothing';
+            break;
     }
+    
 
     var week = getWeekNumber(new Date());
     const data =  {
         labels: [
-          'Fit Score', 'Feel Score', 'Eat Score'
+          'Fitness Score', 'Activity Score', 'Popularity Score'
         ],
         datasets: [
           {
             data: [
-                CountPhotos(photos), CountLikes(photos), CountPhotos(photos)
+                calorie_progress / (total), activity_progress / (total), popularity_progress / (total)
             ],
             backgroundColor: [
               '#00d1b2', '#3e8ed0', '#485fc7'
@@ -57,23 +64,7 @@ export default function Scores({ photos }) {
             animateRotate: true
         };
     return (
-        // <div>
-        //     <div className="w-full bg-gray-200 h-1 mb-6">
-        //         <div className="bg-green-500 h-1" style={{ width: '25%' }}>1</div>
-        //     </div>
-        //     <div className="w-full bg-gray-200 h-1 mb-6">
-        //         <div className="bg-blue-400 h-1" style={{ width: '25%' }}>111</div>
-        //     </div>
-        //     <div className="w-full bg-gray-200 h-1 mb-6">
-        //         <div className="bg-yellow-500 h-1" style={{ width: '25%' }}>111</div>
-        //     </div>
-        //     <div className="w-full bg-gray-200 h-1">
-        //         <div className="bg-red-600 h-1" style={{ width: '25%' }}></div>
-        //     </div>
-        // </div>
-        // <div className="h-16 border-t border-gray-primary mt-12 pt-4">
-        //     <progress class="progress is-primary" value="15" max="100">15%</progress>
-        // </div>
+
     <div>
         <section class="hero is-white is-small">
         <div class="hero-body">
@@ -96,9 +87,9 @@ export default function Scores({ photos }) {
                     <div class="media-content">
                     <div class="content">
                         <p>
-                        <strong>Fit Score</strong>
+                        <strong>Fitness Score</strong>
                         <br/>
-                        <progress class="progress is-primary" value={photos ? photos.length : 0} max="100"></progress>
+                        <progress class="progress is-primary" value={calories} max="500"></progress>
                         </p>
                     </div>
                     </div>
@@ -108,9 +99,9 @@ export default function Scores({ photos }) {
                     <div class="media-content">
                     <div class="content">
                         <p>
-                        <strong>Eat Score</strong>
+                        <strong>Activity Score</strong>
                         <br/>
-                        <progress class="progress is-link" value="90" max="100"></progress>
+                        <progress class="progress is-link" value={activity} max="10"></progress>
                         </p>
                     </div>
                     </div>
@@ -120,9 +111,9 @@ export default function Scores({ photos }) {
                     <div class="media-content">
                     <div class="content">
                         <p>
-                        <strong>Feel Score</strong>
+                        <strong>Popularity Score</strong>
                         <br/>
-                        <progress class="progress is-info" value={CountLikes(photos)} max="100"></progress>
+                        <progress class="progress is-info" value={popularity} max="10"></progress>
                         </p>
                     </div>
                     </div>
@@ -157,20 +148,24 @@ export default function Scores({ photos }) {
         </div>
         <section class="hero is-white is-small">
         <div class="hero-body">
-        <div class="columns is-vcentered is-centered">
-              <div class="column is-6 has-text-centered">
-                <Chart type={'doughnut'} data={data} options={options}/>
-              </div>
+            {!calories
+            ?<p className="text-center text-2xl">No Exercise Records Yet</p>
+            :
+            <div class="columns is-vcentered is-centered">
+                <div class="column is-6 has-text-centered">
+                    <Chart type={'doughnut'} data={data} options={options}/>
+                </div>
 
-              <div class="column is-6">
-                <h1 class="title is-2 mb-6">
-                    Proportion of Each Activity
-                </h1>
-                <h2 class="subtitle">
-                  Track all the exercises you've done in our portal &#8212; be it running, swimming, cycling or even gym workouts
-                </h2>
-              </div>
-        </div>
+                <div class="column is-6">
+                    <h1 class="title is-2 mb-6">
+                        Proportion of Each Score
+                    </h1>
+                    <h2 class="subtitle">
+                    Track all the compositions of training this week &#8212; try to achieve a balanced training style! {weakness} is your weakness at present.
+                    </h2>
+                </div>
+            </div>
+            }
         </div>
         </section>
     </div>
