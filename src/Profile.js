@@ -44,6 +44,24 @@ export default function Profile() {
                 <div class="navbar-menu">
                     <div class="navbar-end">
                         <div class="navbar-item">
+                            <div class="dropdown is-right is-hoverable">
+                                <div class="dropdown-trigger">
+                                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                                    <span>
+                                    <FontAwesomeIcon icon="fa-solid fa-bars"/>
+                                    </span>
+                                </button>
+                                </div>
+                                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                                <div class="dropdown-content">
+                                    <a class="dropdown-item has-text-dark has-text-weight-bold" href="/dashboard">Dashboard</a>
+                                    <a class="dropdown-item has-text-dark has-text-weight-bold" href={`/settings/${user.username}`}>Settings</a>
+                                    <a class="dropdown-item has-text-danger has-text-weight-bold" onClick={() => signOut(auth)} href="/login">Sign out</a>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* <div class="navbar-item">
                         <div class="buttons">
                             <a class="button is-primary" href="/dashboard">
                             <strong>Dashboard</strong>
@@ -52,7 +70,7 @@ export default function Profile() {
                                 <strong>Sign out</strong>
                             </a>
                         </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </nav>

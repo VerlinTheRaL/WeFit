@@ -38,24 +38,7 @@ function Signup() {
     if (validatePassword()) {
       if (!usernameExists) {
         try {
-          // Create a new user with email and password using firebase
-          // const createdUserResult = await createUserWithEmailAndPassword(auth, email, password)
-          // .then(() => {
-          //   navigate('/dashboard')
-          // })
-          // .catch(err => setError(err.message))
-
-          // const createdUserResult = await app
-          //   .auth()
-          //   .createUserWithEmailAndPassword(email, password);
-
           await createUserWithEmailAndPassword(auth, email, password);
-
-          // authentication
-          // -> emailAddress & password & username (displayName)
-          // await auth.currentUser.updateProfile({
-          //   displayName: username
-          // });
 
           await updateProfile(auth.currentUser, {
             displayName: username
@@ -105,7 +88,7 @@ function Signup() {
         <div class="navbar-menu">
           <div class="navbar-end">
             <div class="navbar-item">
-              <strong>Already a member? <a href="/login">Log in now!</a></strong>
+              <strong>Already a member? <a class="has-text-link" href="/login">Log in now!</a></strong>
             </div>
           </div>
         </div>

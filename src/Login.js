@@ -36,7 +36,7 @@ function Login() {
         <div class="navbar-menu">
           <div class="navbar-end">
             <div class="navbar-item">
-              <strong>Don't have an account yet? <a href="/signup">Sign up now!</a></strong>
+              <strong>Don't have an account yet? <a class="has-text-link" href="/signup">Sign up now!</a></strong>
             </div>
           </div>
         </div>

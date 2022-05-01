@@ -47,8 +47,6 @@ function Dashboard() {
 
           <div class="navbar-menu">
             <div class="navbar-end">
-              <CameraIcon className="h-15 w-8" onClick={() => setOpen(true)} style={{cursor: 'pointer'}} />
-
               {user ? (
                 <div class="navbar-item">
                   <div class="dropdown is-right is-hoverable">
@@ -62,7 +60,7 @@ function Dashboard() {
                     <div class="dropdown-menu" id="dropdown-menu4" role="menu">
                       <div class="dropdown-content">
                         <a class="dropdown-item has-text-dark has-text-weight-bold" href={`/p/${user.username}`}>Profile</a>
-                        <a class="dropdown-item has-text-dark has-text-weight-bold" href={`/settings/${user.username}`}>Settings</a>
+                        <a class="dropdown-item has-text-dark has-text-weight-bold" href="/dashboard">Dashboard</a>
                         <a class="dropdown-item has-text-danger has-text-weight-bold" onClick={() => signOut(auth)} href="/login">Sign out</a>
                       </div>
                     </div>
@@ -85,13 +83,20 @@ function Dashboard() {
           </div>
         </nav>
 
-        <div className="grid grid-cols-3 gap-4 justify-between mx-auto max-w-screen-lg">
-
-          <Timeline />
-          <Sidebar />
-          <Modal />
+        <div class="card">
+          <div class="card-content">
+            <div class="content">
+              <aside class="menu mx-6 my-6">
+                <ul class="menu-list">
+                  <li><a>Edit Profile</a></li>
+                  <li><a>Change Password</a></li>
+                  <li><a>Help</a></li>
+                </ul>
+              </aside>
+            </div>
+          </div>
         </div>
-
+        
       </div>
     </LoggedInUserContext.Provider>
   );
