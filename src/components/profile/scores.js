@@ -18,11 +18,12 @@ export default function Scores({ calories, activity, popularity }) {
     };
 
     if (!calories){
-        console.log('helper', 'no caloroies');
+        console.log('helper', 'no calories');
     }
 
     const calorie_progress = calories / 500;
     const activity_progress = activity / 10;
+    console.log(activity);
     const popularity_progress = popularity / 10;
     const total = calorie_progress + activity_progress + popularity_progress;
     const min = Math.min(calorie_progress, activity_progress, popularity_progress);
@@ -71,7 +72,7 @@ export default function Scores({ calories, activity, popularity }) {
         <div class="columns">
             <div class="column"></div>
             <div class="column">
-                <h1 class="title is-4">Currently Week {week[1]} of {week[0]}</h1>
+                <h1 class="title is-4">Week {week[1]} of Year {week[0]}</h1>
             </div>
             <div class="column"></div>
         </div>
@@ -80,14 +81,14 @@ export default function Scores({ calories, activity, popularity }) {
         <div class="column">
             <div class="card">
             <div class="card-content skills-content">
-                <h3 class="title is-4">Scores This Week</h3>
+                <h3 class="title is-4">Check out your scores for this week!</h3>
                 <div class="content">
 
                 <article class="media">
                     <div class="media-content">
                     <div class="content">
                         <p>
-                        <strong>Fitness Score</strong>
+                        <strong>Fitness</strong>
                         <br/>
                         <progress class="progress is-primary" value={calories} max="500"></progress>
                         </p>
@@ -99,7 +100,7 @@ export default function Scores({ calories, activity, popularity }) {
                     <div class="media-content">
                     <div class="content">
                         <p>
-                        <strong>Activity Score</strong>
+                        <strong>Activity</strong>
                         <br/>
                         <progress class="progress is-link" value={activity} max="10"></progress>
                         </p>
@@ -111,7 +112,7 @@ export default function Scores({ calories, activity, popularity }) {
                     <div class="media-content">
                     <div class="content">
                         <p>
-                        <strong>Popularity Score</strong>
+                        <strong>Popularity</strong>
                         <br/>
                         <progress class="progress is-info" value={popularity} max="10"></progress>
                         </p>
@@ -119,7 +120,7 @@ export default function Scores({ calories, activity, popularity }) {
                     </div>
                 </article>
 
-                <article class="media">
+                {/* <article class="media">
                     <div class="media-content">
                     <div class="content">
                         <p>
@@ -141,7 +142,7 @@ export default function Scores({ calories, activity, popularity }) {
                         </p>
                     </div>
                     </div>
-                </article>
+                </article> */}
                 </div>
             </div>
             </div>
@@ -149,7 +150,7 @@ export default function Scores({ calories, activity, popularity }) {
         <section class="hero is-white is-small">
         <div class="hero-body">
             {!calories
-            ?<p className="text-center text-2xl">No Exercise Records Yet</p>
+            ?<p class="text-center text-2xl px-2 py-2">No Exercise Records Yet</p>
             :
             <div class="columns is-vcentered is-centered">
                 <div class="column is-6 has-text-centered">

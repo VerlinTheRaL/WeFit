@@ -1,19 +1,16 @@
 import 'bulma/css/bulma.min.css';
 // import your fontawesome library
 import './fontAwesome';
-import { useContext, useEffect } from 'react';
+import { useContext} from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { getAuth, signOut } from 'firebase/auth'
-// import { auth } from './firebase'
-// import { Navigate } from 'react-router-dom'
 
 import UserContext from './context/user';
 import useUser from './hooks/use-user';
-// import LoggedInUserContext from '../context/logged-in-user';
 import LoggedInUserContext from './context/logged-in-user';
-import { updateProfile } from 'firebase/auth'
+import { updateProfile, updateEmail, updatePassword } from 'firebase/auth'
 import { doc, updateDoc } from "firebase/firestore";
 import { doesUsernameExist } from './services/firebase';
 import { useState } from 'react'
@@ -21,7 +18,7 @@ import { db } from './firebase'
 import { useNavigate } from 'react-router-dom'
 
 
-function Dashboard() {
+function ProfileSettings() {
   const { user: loggedInUser } = useContext(UserContext);
   const { user, setActiveUser } = useUser(loggedInUser?.uid);
   const auth = getAuth();
@@ -31,9 +28,18 @@ function Dashboard() {
   const [weight, setWeight] = useState('');
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  // const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
+
+  // const validatePassword = (pass_in, confirmPass_in) => {
+  //   let isValid = true;
+  //   if (pass_in !== confirmPass_in) {
+  //     isValid = false;
+  //     setError('Passwords do not match. Please try again.');
+  //   }
+  //   return isValid;
+  // }
 
   const updateInformation = async (event) => {
     event.preventDefault();
@@ -41,26 +47,36 @@ function Dashboard() {
     const usernameExists = await doesUsernameExist(username);
     if (!usernameExists) {
       try {
+
+        const newUsername = username !== "" ? username.toLowerCase() : user.username;
+        const newFullName = fullName !== "" ? fullName : user.fullName;
+        const newWeight = weight !== "" ? weight : user.weight;
+        const newEmail = email !== "" ? email : user.emailAddress;
+
         await updateProfile(auth.currentUser, {
           displayName: username
         });
+
+        await updateEmail(auth.currentUser, newEmail);
+        await updatePassword(auth.currentUser, password);
 
         // firebase user collection (create a document)
         const userRef = doc(db, "users", user.docId);
         await updateDoc(userRef,
           {
-            username: ( username != "" ? username.toLowerCase() : user.username ),
-            fullName: ( fullName != "" ? fullName : user.fullName ),
-            weight: ( weight != "" ? weight : user.weight ),
+            username: newUsername,
+            fullName: newFullName,
+            weight: newWeight,
+            emailAddress: user.emailAddress,
           });
 
-        navigate('/p/' + ( username != "" ? username.toLowerCase() : user.username ))
+        navigate('/p/' + ( username !== "" ? username.toLowerCase() : user.username ))
 
       } catch (error) {
         setFullName('');
         setWeight('');
-        // setEmail('');
-        // setPassword('');
+        setEmail('');
+        setPassword('');
         // setConfirmPassword('')
         console.log(error);
         setError(error.message);
@@ -96,8 +112,9 @@ function Dashboard() {
                     </div>
                     <div class="dropdown-menu" id="dropdown-menu4" role="menu">
                       <div class="dropdown-content">
-                        <a class="dropdown-item has-text-dark has-text-weight-bold" href={`/p/${user.username}`}>Profile</a>
                         <a class="dropdown-item has-text-dark has-text-weight-bold" href="/dashboard">Dashboard</a>
+                        <a class="dropdown-item has-text-dark has-text-weight-bold" href={`/p/${user.username}`}>Profile</a>                        
+                        <a class="dropdown-item has-text-dark has-text-weight-bold" href={`/settings/${user.username}`}>Settings</a>
                         <a class="dropdown-item has-text-danger has-text-weight-bold" onClick={() => signOut(auth)} href="/login">Sign out</a>
                       </div>
                     </div>
@@ -133,43 +150,43 @@ function Dashboard() {
 
                 <form onSubmit={updateInformation} id="update_information_form" name="update_information_form" class="box mx-6 my-6">
 
-                  {/* <div class="field">
-                    <label class="label">Old Username:</label>
-                    <div class="control">
-                      <input class="input" type="username" name="oldusername" value={user ? (`${user.username}` === 'undefined' ? '' : `${user.username}`) : ''} disabled/>
-                    </div>
-                  </div> */}
-
                   <div class="field">
-                    <label class="label">New Username:</label>
+                    <label class="label">Username:</label>
                     <div class="control">
                       <input class="input" type="username" name="newusername" defaultValue={user ? (`${user.username}` === 'undefined' ? '' : `${user.username}`) : ''} onChange={event => setUsername(event.target.value)}/>
                     </div>
                   </div>
 
-                  {/* <div class="field">
-                    <label class="label">Old Full Name:</label>
-                    <div class="control">
-                      <input class="input" type="fullname" name="oldfullname" value={user ? (`${user.fullName}` === 'undefined' ? '' : `${user.fullName}`) : ''} disabled/>
-                    </div>
-                  </div> */}
-
                   <div class="field">
-                    <label class="label">New Full Name:</label>
+                    <label class="label">Full Name:</label>
                     <div class="control">
                       <input class="input" type="fullname" name="newfullname" defaultValue={user ? (`${user.fullName}` === 'undefined' ? '' : `${user.fullName}`) : ''} onChange={event => setFullName(event.target.value)}/>
                     </div>
                   </div>
 
-                  {/* <div class="field">
-                    <label class="label">Old Weight:</label>
+                  <div class="field">
+                    <label class="label">Email:</label>
                     <div class="control">
-                      <input class="input" type="weight" name="oldweight" value={user ? (`${user.weight}` === 'undefined' ? '' : `${user.weight}`) : ''} disabled/>
+                      <input class="input" type="email" name="newemail" defaultValue={user ? (`${user.emailAddress}` === 'undefined' ? '' : `${user.emailAddress}`) : ''} onChange={event => setEmail(event.target.value)}/>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">Password:</label>
+                    <div class="control">
+                      <input class="input" type="password" name="newpassword" placeholder="********" onChange={event => setPassword(event.target.value)}/>
+                    </div>
+                  </div>
+
+                  {/* <div class="field">
+                    <label class="label">Confirm password:</label>
+                    <div class="control">
+                      <input class="input" type="password" name="newconfirmpassword" placeholder="********" onChange={event => setConfirmPassword(event.target.value)}/>
                     </div>
                   </div> */}
 
                   <div class="field">
-                    <label class="label">New Weight:</label>
+                    <label class="label">Weight:</label>
                     <div class="control">
                       <input class="input" type="weight" name="newweight" defaultValue={user ? (`${user.weight}` === 'undefined' ? '' : `${user.weight}`) : ''} onChange={event => setWeight(event.target.value)}/>
                     </div>
@@ -188,14 +205,12 @@ function Dashboard() {
         </div>
       </section>
 
-        
-
       </div>
     </LoggedInUserContext.Provider>
   );
 }
 
-export default Dashboard;
-Dashboard.propTypes = {
+export default ProfileSettings;
+ProfileSettings.propTypes = {
   user: PropTypes.object.isRequired
 };

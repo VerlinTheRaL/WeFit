@@ -46,9 +46,9 @@ function Login() {
         <div class="hero-body">
           <div class="container">
             <div class="columns is-vcentered is-centered">
-              <div class="column is-5"></div>
+              <div class="column is-6"></div>
 
-              <div class="column is-7 has-text-centered">
+              <div class="column is-6 has-text-centered">
                 <form onSubmit={login} id="login-form" class="box mx-6 my-6">
                   <div class = "field">
                     <label class="label">Email</label>

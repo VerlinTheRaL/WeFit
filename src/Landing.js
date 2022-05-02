@@ -62,7 +62,7 @@ function Landing() {
                   Fitness Tracking Made Easy
                 </h1>
                 <h2 class="subtitle">
-                  Track all the exercises you've done in our portal &#8212; be it running, swimming, cycling or even gym workouts
+                  Track all the exercises you've done in our portal &#8212; be it running, swimming, cycling or even just walking
                 </h2>
               </div>
             </div>

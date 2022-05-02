@@ -7,72 +7,70 @@ import { doesUsernameExist } from './services/firebase';
 import { useState } from 'react'
 import { auth, db } from './firebase'
 import { useNavigate } from 'react-router-dom'
-import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { collection, addDoc } from "firebase/firestore";
 
 function Signup() {
   const [username, setUsername] = useState('')
-  const [fullName, setFullName] = useState('');
-  const [weight, setWeight] = useState('');
+  // const [fullName, setFullName] = useState('');
+  // const [weight, setWeight] = useState('');
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  // const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
-  const validatePassword = () => {
-    const isValid = true
-    if (password !== '' && confirmPassword !== '') {
-      if (password !== confirmPassword) {
-        isValid = false
-        setError('Passwords do not match. Please try again.')
-      }
-    }
-    return isValid
-  }
+  // const validatePassword = () => {
+  //   let isValid = true;
+  //   if (password !== '' && confirmPassword !== '') {
+  //     if (password !== confirmPassword) {
+  //       isValid = false;
+  //       setError('Passwords do not match. Please try again.');
+  //     }
+  //   }
+  //   return isValid;
+  // }
 
   const register = async (event) => {
     event.preventDefault();
     setError('');
     const usernameExists = await doesUsernameExist(username);
-    if (validatePassword()) {
-      if (!usernameExists) {
-        try {
-          await createUserWithEmailAndPassword(auth, email, password);
+    if (!usernameExists) {
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
 
-          await updateProfile(auth.currentUser, {
-            displayName: username
+        await updateProfile(auth.currentUser, {
+          displayName: username
+        });
+
+        // firebase user collection (create a document)
+        console.log("User ID: " + auth.currentUser.uid);
+        await addDoc(collection(db, 'users'),
+          {
+            userId: auth.currentUser.uid,
+            username: username.toLowerCase(),
+            fullName: '',
+            weight: '',
+            emailAddress: email.toLowerCase(),
+            following: ['2', auth.currentUser.uid],
+            followers: [],
+            dateCreated: Date.now()
           });
 
-          // firebase user collection (create a document)
-          console.log("User ID: " + auth.currentUser.uid);
-          await addDoc(collection(db, 'users'),
-            {
-              userId: auth.currentUser.uid,
-              username: username.toLowerCase(),
-              fullName,
-              weight,
-              emailAddress: email.toLowerCase(),
-              following: ['2'],
-              followers: [],
-              dateCreated: Date.now()
-            });
+        navigate('/dashboard')
 
-          navigate('/dashboard')
-
-        } catch (error) {
-          setFullName('');
-          setWeight('');
-          setEmail('');
-          setPassword('');
-          setConfirmPassword('')
-          console.log(error);
-          setError(error.message);
-        }
-      } else {
-        setUsername('');
-        setError('That username is already taken, please try another.');
+      } catch (error) {
+        // setFullName('');
+        // setWeight('');
+        setEmail('');
+        setPassword('');
+        // setConfirmPassword('')
+        console.log(error);
+        setError(error.message);
       }
+    } else {
+      setUsername('');
+      setError('That username is already taken, please try another.');
     }
   }
 
@@ -99,52 +97,64 @@ function Signup() {
         <div class="hero-body">
           <div class="container">
             <div class="columns is-vcentered is-centered">
-              <div class="column is-5"></div>
+              <div class="column is-6"></div>
 
-              <div class="column is-7 has-text-centered">
+              <div class="column is-6 has-text-centered">
                 {error && <p className="mb-4 text-s text-red-primary">{error}</p>}
                 <form onSubmit={register} id="registration_form" name="registration_form" class="box mx-6 my-6">
                   <div class="field">
                     <label class="label">Username</label>
-                    <div class="control">
-                      <input class="input" type="username" name="username" placeholder="Your username" value={username} onChange={event => setUsername(event.target.value)} />
+                    <div class="control has-icons-left">
+                      <input class="input" type="username" name="username" placeholder="Your username" value={username} required onChange={event => setUsername(event.target.value)} />
+                      <span class="icon is-small is-left">
+                        <FontAwesomeIcon icon="fa-solid fa-user"/>
+                      </span>
                     </div>
                   </div>
 
                   <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control has-icons-left">
+                      <input class="input" type="email" name="email" placeholder="Your email, e.g., example@gmail.com" value={email} required onChange={event => setEmail(event.target.value)} />
+                      <span class="icon is-small is-left">
+                        <FontAwesomeIcon icon="fa-solid fa-envelope"/>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <label class="label">Password</label>
+                    <div class="control has-icons-left">
+                      <input class="input" type="password" name="password" id="password" placeholder="********" value={password} required onChange={event => setPassword(event.target.value)} />
+                      <span class="icon is-small is-left">
+                        <FontAwesomeIcon icon="fa-solid fa-lock"/>
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* <div class="field">
+                    <label class="label">Confirm Password</label>
+                    <div class="control has-icons-left">
+                      <input class="input" type="password" name="confirm_password" id="confirm_password" placeholder="********" value={confirmPassword} onChange={event => setConfirmPassword(event.target.value)} />
+                      <span class="icon is-small is-left">
+                        <FontAwesomeIcon icon="fa-solid fa-lock"/>
+                      </span>
+                    </div>
+                  </div> */}
+
+                  {/* <div class="field">
                     <label class="label">Full Name</label>
                     <div class="control">
-                      <input class="input" type="fullname" name="fullname" placeholder="Your full name" value={fullName} onChange={event => setFullName(event.target.value)} />
+                      <input class="input" type="fullname" name="fullname" placeholder="Your full name (optional)" value={fullName} onChange={event => setFullName(event.target.value)} />
                     </div>
                   </div>
 
                   <div class="field">
                     <label class="label">Weight</label>
                     <div class="control">
-                      <input class="input" type="weight" name="weight" placeholder="Your weight in kilograms" value={weight} onChange={event => setWeight(event.target.value)} />
+                      <input class="input" type="weight" name="weight" placeholder="Your weight in kilograms (optional)" value={weight} onChange={event => setWeight(event.target.value)} />
                     </div>
-                  </div>
-
-                  <div class="field">
-                    <label class="label">Email</label>
-                    <div class="control">
-                      <input class="input" type="email" name="email" placeholder="Your email, e.g., example@gmail.com" value={email} onChange={event => setEmail(event.target.value)} />
-                    </div>
-                  </div>
-
-                  <div class="field">
-                    <label class="label">Password</label>
-                    <div class="control">
-                      <input class="input" type="password" name="password" id="password" placeholder="********" value={password} onChange={event => setPassword(event.target.value)} />
-                    </div>
-                  </div>
-
-                  <div class="field">
-                    <label class="label">Confirm Password</label>
-                    <div class="control">
-                      <input class="input" type="password" name="confirm_password" id="confirm_password" placeholder="********" value={confirmPassword} onChange={event => setConfirmPassword(event.target.value)} />
-                    </div>
-                  </div>
+                  </div> */}
 
                   <button class="button is-primary" type="submit">
                     <strong>Sign up</strong>
