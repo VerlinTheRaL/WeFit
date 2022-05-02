@@ -86,7 +86,7 @@ function Signup() {
         <div class="navbar-menu">
           <div class="navbar-end">
             <div class="navbar-item">
-              <strong>Already a member? <a href="/login">Log in now!</a></strong>
+              <strong>Already a member? <a class="has-text-link" href="/login">Log in now!</a></strong>
             </div>
           </div>
         </div>
