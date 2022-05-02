@@ -8,8 +8,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import { useAuthValue } from './AuthContext'
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth'
-// import { auth } from './firebase'
-// import { Navigate } from 'react-router-dom'
 
 import Timeline from './components/timeline';
 import Sidebar from './components/sidebar';
@@ -54,9 +52,9 @@ function Dashboard() {
             <div class="navbar-end">
               <CameraIcon className="h-15 w-8" onClick={() => setOpen(true)} />
 
-              <div class="navbar-item">
+              {/* <div class="navbar-item">
                 <strong>Dashboard: {user?.email}</strong>
-              </div>
+              </div> */}
               {user ? (
                 <div class="navbar-item">
                   <div class="buttons">

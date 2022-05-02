@@ -69,7 +69,7 @@ function Signup() {
               fullName,
               weight,
               emailAddress: email.toLowerCase(),
-              following: ['2'],
+              following: [],
               followers: [],
               dateCreated: Date.now()
             });
