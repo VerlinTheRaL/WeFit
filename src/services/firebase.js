@@ -140,12 +140,12 @@ export async function getUserPhotosByUserId(userId) {
   return photos;
 }
 
-export function getMondayOfCurrentWeek() {
+export function getSundayOfCurrentWeek() {
   const today = new Date();
-  const first = today.getDate() - today.getDay() + 1;
+  const first = today.getDate() - today.getDay();
 
-  const monday = new Date(today.setDate(first));
-  return monday;
+  const sunday = new Date(today.setDate(first));
+  return sunday;
 }
 
 export async function getUserFitsByUserId(userId) {
@@ -155,8 +155,8 @@ export async function getUserFitsByUserId(userId) {
   //   ...fit.data(),
   //   docId: fit.id
   // }));
-  const Monday = getMondayOfCurrentWeek();
-  const fits = q_doc.docs.filter(fit => fit.data().dateCreated.toDate() > Monday.getTime()).map((fit) => ({
+  const Sunday = getSundayOfCurrentWeek();
+  const fits = q_doc.docs.filter(fit => fit.data().dateCreated.toDate() > Sunday.getTime()).map((fit) => ({
     ...fit.data(),
     docId: fit.id
   }));
@@ -227,8 +227,8 @@ export async function CountCalorie(user, fits) {
 export async function CountLikes(photos) {
   if (photos) {
     var cnt = 0;
-    const Monday = getMondayOfCurrentWeek();
-    photos.filter(photo => new Date(photo.dateCreated).getTime() > Monday.getTime()).map((photo) => (
+    const Sunday = getSundayOfCurrentWeek();
+    photos.filter(photo => new Date(photo.dateCreated).getTime() > Sunday.getTime()).map((photo) => (
       cnt = cnt + photo.likes.length
     )
     )
@@ -238,8 +238,8 @@ export async function CountLikes(photos) {
 
 export async function CountPhotos(photos) {
   if (photos) {
-    const Monday = getMondayOfCurrentWeek();
-    const weekly_photos = photos.filter(photo => new Date(photo.dateCreated).getTime() > Monday.getTime());
+    const Sunday = getSundayOfCurrentWeek();
+    const weekly_photos = photos.filter(photo => new Date(photo.dateCreated).getTime() > Sunday.getTime());
     return weekly_photos.length
   };
 }
