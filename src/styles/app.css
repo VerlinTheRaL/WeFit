@@ -587,6 +587,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .h-full {
   height: 100%;
 }
+.h-1 {
+  height: 0.25rem;
+}
 .min-h-\[800px\] {
   min-height: 800px;
 }
@@ -749,6 +752,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 .py-5 {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
+}
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 .py-4 {
   padding-top: 1rem;
