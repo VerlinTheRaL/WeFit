@@ -7,7 +7,7 @@ import { doesUsernameExist } from './services/firebase';
 import { useState } from 'react'
 import { auth, db } from './firebase'
 import { useNavigate } from 'react-router-dom'
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth'
 import { collection, addDoc } from "firebase/firestore";
 
 function Signup() {
@@ -21,14 +21,14 @@ function Signup() {
   const navigate = useNavigate()
 
   // const validatePassword = () => {
-  //   let isValid = true;
+  //   const isValid = true
   //   if (password !== '' && confirmPassword !== '') {
   //     if (password !== confirmPassword) {
-  //       isValid = false;
-  //       setError('Passwords do not match. Please try again.');
+  //       isValid = false
+  //       setError('Passwords do not match. Please try again.')
   //     }
   //   }
-  //   return isValid;
+  //   return isValid
   // }
 
   const register = async (event) => {
@@ -44,7 +44,6 @@ function Signup() {
         });
 
         // firebase user collection (create a document)
-        console.log("User ID: " + auth.currentUser.uid);
         await addDoc(collection(db, 'users'),
           {
             userId: auth.currentUser.uid,
@@ -87,7 +86,7 @@ function Signup() {
         <div class="navbar-menu">
           <div class="navbar-end">
             <div class="navbar-item">
-              <strong>Already a member? <a class="has-text-link" href="/login">Log in now!</a></strong>
+              <strong>Already a member? <a href="/login">Log in now!</a></strong>
             </div>
           </div>
         </div>

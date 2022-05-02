@@ -500,9 +500,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
-.mt-4 {
-  margin-top: 1rem;
-}
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -541,6 +538,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .mb-8 {
   margin-bottom: 2rem;
+}
+.mt-4 {
+  margin-top: 1rem;
 }
 .mr-10 {
   margin-right: 2.5rem;

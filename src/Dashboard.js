@@ -86,7 +86,7 @@ function Dashboard() {
           </div>
         </nav>
 
-        <div className="grid grid-cols-3 gap-4 justify-between mx-auto mt-4 max-w-screen-lg">
+        <div className="grid grid-cols-3 gap-4 justify-between mx-auto max-w-screen-lg">
 
           <Timeline />
           <Sidebar />
