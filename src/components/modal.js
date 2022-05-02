@@ -129,7 +129,7 @@ function Modal() {
                                         as="h3"
                                         className="text-lg leading-6 font-medium text-gray-900"
                                     >
-                                        upload a photo
+                                        Upload Photo
                                     </Dialog.Title>
                                     <div>
                                         <input
@@ -144,7 +144,7 @@ function Modal() {
                                             className="border-none focus:ring-0 w-full text-center"
                                             type="text"
                                             ref={captionRef}
-                                            placeholder="Please enter a caption..."
+                                            placeholder="Enter your caption here"
                                         />
                                     </div>
 
@@ -153,7 +153,7 @@ function Modal() {
                                             className="border-none focus:ring-0 w-full text-center"
                                             type="number"
                                             ref={distanceRef}
-                                            placeholder="Please enter distance in miles..."
+                                            placeholder="Enter distance (in miles)"
                                         />
                                     </div>
 
@@ -162,7 +162,7 @@ function Modal() {
                                             className="border-none focus:ring-0 w-full text-center"
                                             type="number"
                                             ref={durationRef}
-                                            placeholder="Please enter duration in minutes..."
+                                            placeholder="Enter workout duration (in minutes_"
                                         />
                                     </div>
 
@@ -181,7 +181,7 @@ function Modal() {
                                         </label>
                                         <label class="radio">
                                             <input type="radio" name="Sports" onClick={() => setSelectedSports("Bicycling")} />
-                                            Bicycling
+                                            Cycling
                                         </label>
                                     </div>
 

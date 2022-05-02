@@ -12,6 +12,7 @@ import Signup from './Signup';
 import Login from './Login';
 import Dashboard from './Dashboard';
 import Profile from './Profile'
+import ProfileSettings from './ProfileSettings'
 
 import {
   BrowserRouter as Router,
@@ -46,7 +47,12 @@ function App() {
               <Route path='/dashboard' element = {<ProtectedRoute user={user}/>}>
                 <Route path="/dashboard" element={<Dashboard user={user}/>} />
               </Route>
-              <Route path='/p/:username' element={<Profile user={user} />} />
+              <Route path='/p/:username' element = {<ProtectedRoute user={user}/>}>
+                <Route path="/p/:username" element={<Profile user={user}/>} />
+              </Route>
+              <Route path='/settings/:username' element = {<ProtectedRoute user={user}/>}>
+                <Route path="/settings/:username" element={<ProfileSettings user={user}/>} />
+              </Route>
               <Route path="/" element={<Landing />} />
               <Route path="*" element={<Landing />} />
             </Routes>
