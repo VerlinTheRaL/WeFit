@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="325facc6-6da6-4d59-820a-982071ee6788" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../.firebase/hosting.YnVpbGQ.cache" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.firebaserc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../firebase.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ProfileSettings.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Landing.js" beforeDir="false" afterPath="$PROJECT_DIR$/Landing.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Profile.js" beforeDir="false" afterPath="$PROJECT_DIR$/Profile.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Signup.js" beforeDir="false" afterPath="$PROJECT_DIR$/Signup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/modal.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/modal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/post/header.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/post/header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/profile/header.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/profile/header.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/profile/photos.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/profile/photos.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/profile/scores.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/profile/scores.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/sidebar/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/sidebar/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fontAwesome.js" beforeDir="false" afterPath="$PROJECT_DIR$/fontAwesome.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/styles/app.css" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="28cgLUZKrrBl2StKDsG8PX0Y8WQ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="325facc6-6da6-4d59-820a-982071ee6788" name="Changes" comment="" />
+      <created>1651521236792</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1651521236792</updated>
+      <workItem from="1651521240094" duration="33000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
+  <component name="UnityProjectConfiguration" hasMinimizedUI="null" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>
