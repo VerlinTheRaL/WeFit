@@ -71,7 +71,7 @@ export default function Scores({ calories, activity, popularity }) {
                     <div class="columns">
                         <div class="column"></div>
                         <div class="column">
-                            <h1 class="title is-4">Currently Week {week[1]} of {week[0]}</h1>
+                            <h1 class="title is-4">Currently Week {week[1]} of Year {week[0]}</h1>
                         </div>
                         <div class="column"></div>
                     </div>
@@ -80,7 +80,7 @@ export default function Scores({ calories, activity, popularity }) {
             <div class="column">
                 <div class="card">
                     <div class="card-content skills-content">
-                        <h3 class="title is-4">Scores This Week</h3>
+                        <h3 class="title is-4">Check out your scores for this week!</h3>
                         <div class="content">
 
                             <article class="media">
@@ -119,7 +119,7 @@ export default function Scores({ calories, activity, popularity }) {
                                 </div>
                             </article>
 
-                            <article class="media">
+                            {/* <article class="media">
                                 <div class="media-content">
                                     <div class="content">
                                         <p>
@@ -141,7 +141,7 @@ export default function Scores({ calories, activity, popularity }) {
                                         </p>
                                     </div>
                                 </div>
-                            </article>
+                            </article> */}
                         </div>
                     </div>
                 </div>
