@@ -15,6 +15,7 @@ export default function Header({
       fullName,
       followers,
       following,
+      weight,
       username: profileUsername
     }
   }) {
@@ -100,8 +101,9 @@ export default function Header({
               </>
             )}
           </div>
-          <div className="container mt-4">
-            <p className="font-medium">{!fullName ? <Skeleton count={1} height={24} /> : fullName}</p>
+          <div className="container flex mt-4">
+            <p className="font-medium mr-10">{!fullName ? <Skeleton count={1} height={24} /> : fullName}</p>
+            <p className="font-medium mr-10">{!weight ? <Skeleton count={1} height={24} /> : (weight + "kg")}</p>
           </div>
         </div>
       </div>

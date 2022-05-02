@@ -52,7 +52,7 @@ function Signup() {
             fullName: '',
             weight: '',
             emailAddress: email.toLowerCase(),
-            following: ['2', auth.currentUser.uid],
+            following: [],
             followers: [],
             dateCreated: Date.now()
           });
