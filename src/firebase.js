@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { getPerformance } from "firebase/performance";
 
 import { seedDatabase } from "./seed";
 
@@ -20,8 +21,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
-
-
+const perf = getPerformance(app);
 
 // This only needs to be ran once to manually add some test users to db
 // seedDatabase(db);
