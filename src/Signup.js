@@ -45,6 +45,7 @@ function Signup() {
           });
 
           // firebase user collection (create a document)
+          console.log("User ID: " + auth.currentUser.uid);
           await addDoc(collection(db, 'users'),
             {
               userId: auth.currentUser.uid,
@@ -111,7 +112,7 @@ function Signup() {
                   </div>
 
                   <div class="field">
-                    <label class="label">FullName</label>
+                    <label class="label">Full Name</label>
                     <div class="control">
                       <input class="input" type="fullname" name="fullname" placeholder="Your full name" value={fullName} onChange={event => setFullName(event.target.value)} />
                     </div>
