@@ -7,17 +7,15 @@ export default function usePhotos(user) {
   useEffect(() => {
     async function getTimelinePhotos() {
       // does the user actually follow people?
+      const userPostPhotos = await getUserPhotosByUserId(user.userId);
       if (user?.following?.length > 0) {
-
         const followedUserPhotos = await getPhotos(user.userId, user.following);
-        const userPostPhotos = await getUserPhotosByUserId(user.userId);
-
         const postPhotos = userPostPhotos.concat(followedUserPhotos);
-        console.log(postPhotos);
-        // re-arrange array to be newest photos first by dateCreated
         postPhotos.sort((a, b) => b.dateCreated - a.dateCreated);
-        console.log(postPhotos);
         setPhotos(postPhotos);
+      } else {
+        userPostPhotos.sort((a, b) => b.dateCreated - a.dateCreated);
+        setPhotos(userPostPhotos);
       }
     }
 
