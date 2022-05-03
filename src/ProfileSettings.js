@@ -83,12 +83,30 @@ function ProfileSettings() {
         });
 
         // comments
-        const commentsQuery = query(photosRef, where("displayName", "==", user.username));
+        const commentsQuery = query(photosRef, where("comments.displayName", "array-contains", user.username));
         const commentsQuerySnapshot = await getDocs(commentsQuery);
 
         commentsQuerySnapshot.forEach( async (commentsDoc) => {
 
-          console.log(commentsDoc.id, " => ", commentsDoc.data());
+          const oldDisplayNames = commentsDoc.data().comments.displayName;
+
+          const newDisplayNames = oldDisplayNames.map((item) => {
+            if(item == user.username){
+              return newUsername;
+            }
+            else{
+              return item;
+            }
+          });
+
+          await updateDoc(commentsDoc.ref,
+            {
+              comments: {
+                displayName: newDisplayNames,
+                comment: commentsDoc.data().comments.comment,
+              },
+            });
+          // console.log(commentsDoc.id, " => ", commentsDoc.data().comments.displayName);
 
           // await updateDoc(posterDoc.ref,
           //   {

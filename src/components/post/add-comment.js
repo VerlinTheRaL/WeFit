@@ -37,7 +37,7 @@ export default function AddComment({ docId, comments, setComments, commentInput 
     if(comment != ''){
       setComment('');
       const PhotosRef = doc(db, "photos", docId);
-      console.log("comments: " + comments.comment);
+      // console.log("comments: " + comments.comment);
       updateDoc(PhotosRef, {
         comments: {
           displayName: comments.displayName,

@@ -18,7 +18,9 @@ export default function Comments({ docId, comments: allComments, posted, comment
   const displayNameSlice = arrOfDisplayNames.slice(0, commentsSlice);
   const commentSlice = arrOfComments.slice(0, commentsSlice);
 
-  const commentsMapped = displayNameSlice.map((displayName, i) => { return [displayName, commentSlice[i]] });
+  const commentsMapped = displayNameSlice.map((displayName, i) => { 
+    return [displayName, commentSlice[i]] 
+  });
 
   return (
     <>
