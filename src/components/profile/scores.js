@@ -71,7 +71,7 @@ export default function Scores({ calories, activity, popularity }) {
                     <div class="columns">
                         <div class="column"></div>
                         <div class="column">
-                            <h1 class="title is-4">Currently Week {week[1]} of Year {week[0]}</h1>
+                            <h1 class="title is-5">Currently Week {week[1]} of Year {week[0]}</h1>
                         </div>
                         <div class="column"></div>
                     </div>
