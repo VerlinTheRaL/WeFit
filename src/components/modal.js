@@ -2,14 +2,16 @@ import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modal-atom";
 import { Dialog, Transition, Menu } from "@headlessui/react";
 import { Fragment, useRef, useState } from "react";
-import {
-    CameraIcon,
-    ChevronDownIcon
-} from "@heroicons/react/solid";
+import 'bulma/css/bulma.min.css';
+
+import '../fontAwesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { async } from "@firebase/util";
 import { db, storage, auth } from "../firebase"
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { ref, getDownloadURL, uploadString } from "firebase/storage";
+
+import { useNavigate } from 'react-router-dom'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -24,6 +26,8 @@ function Modal() {
     const [selectedSports, setSelectedSports] = useState(null);
     const distanceRef = useRef(null);
     const durationRef = useRef(null);
+
+    const navigate = useNavigate()
     const uploadPost = async () => {
         if (loading) return;
         setLoading(true);
@@ -80,7 +84,7 @@ function Modal() {
 
     return (
         <Transition.Root show={open} as={Fragment}>
-            <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" onClose={SetOpen}>
+            <Dialog as="div" className="fade fixed z-10 inset-0 overflow-y-auto" onClose={SetOpen}>
                 <div className='flex items-end justify-center min-h-[800px] sm:min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0'>
                     <Transition.Child
                         as={Fragment}
@@ -94,7 +98,7 @@ function Modal() {
                         <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
                     </Transition.Child>
 
-                    <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203</span>
+                    <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">{/*&#8203*/}</span>
                     <Transition.Child
                         as={Fragment}
                         enter="ease-out duration-300"
@@ -107,30 +111,128 @@ function Modal() {
                         <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left
                     overflow-hidden shadow-xl transform transition-all sm: my-8 sm: align-middle sm: max-w-sm sm: w-full sm: p-6">
                             <div>
-                                {selectedFile ? (
-                                    <img src={selectedFile}
-                                        className="w-full object-contain cursor-pointer"
-                                        onClick={() => setSelectedFile(null)}
-                                        alt="" />
-                                ) : (
-                                    <div
-                                        onClick={() => filePickerRef.current.click()}
-                                        className="mx-auto flex item-center justify-center h-12 w-12 rounded-full bg-red-100 cursor-pointer"
+                                <div className="mb-2">
+                                    <h1 class="title is-4 mb-6 has-text-centered">
+                                        Create Workout Post
+                                    </h1>
+                                </div>
 
-                                    >
-                                        <CameraIcon
-                                            className="h-10 w-10 text-red-600"
-                                            aria-hidden="true" />
+                                <div className="mt-4">
+                                    <div className="mt-2">
+                                        <h3
+                                        className="text-lg leading-6 font-medium text-gray-900 mb-3"
+                                        >
+                                            Caption:
+                                        </h3>
+                                        <textarea
+                                            class="border-none focus:ring-0 w-full pl-2"
+                                            type="text"
+                                            ref={captionRef}
+                                            placeholder= "Write a caption"
+                                            rows="3"
+                                        >
+                                        </textarea>
+                                        {/* <input
+                                            className="border-none focus:ring-0 w-full pl-2"
+                                            type="text"
+                                            ref={captionRef}
+                                            placeholder= "Write a caption"
+                                        /> */}
                                     </div>
 
-                                )}
-                                <div className="mt-3 text-center sm:mt-5">
-                                    <Dialog.Title
-                                        as="h3"
-                                        className="text-lg leading-6 font-medium text-gray-900"
-                                    >
-                                        Upload Photo
-                                    </Dialog.Title>
+                                    <div className="mt-2">
+                                        <h3
+                                        className="text-lg leading-6 font-medium text-gray-900 mb-3"
+                                        >
+                                            Distance Completed:
+                                        </h3>
+                                        <input
+                                            className="border-none focus:ring-0 w-full pl-2"
+                                            type="number"
+                                            ref={distanceRef}
+                                            placeholder="Enter distance (in miles)"
+                                        />
+                                    </div>
+
+                                    <div className="mt-2">
+                                        <h3
+                                        className="text-lg leading-6 font-medium text-gray-900 mb-3"
+                                        >
+                                            Workout Duration:
+                                        </h3>
+                                        <input
+                                            className="border-none focus:ring-0 w-full pl-2"
+                                            type="number"
+                                            ref={durationRef}
+                                            placeholder="Enter workout duration (in minutes)"
+                                        />
+                                    </div>
+
+                                    <div className="mt-2">
+                                        <h3
+                                        className="text-lg leading-6 font-medium text-gray-900 mb-3"
+                                        >
+                                            Type of Workout:
+                                        </h3>
+                                        <div class="control" className="mt-3 ml-2">
+                                            {/* <label class="radio">
+                                                <input type="radio" name="Sports" onClick={() => setSelectedSports("Walking")} />
+                                                &nbsp; Walking
+                                            </label> */}
+                                            <label class="radio">
+                                                <input type="radio" name="Sports" onClick={() => setSelectedSports("Jogging")} />
+                                                &nbsp; Jogging
+                                            </label>
+                                            {/* <label class="radio">
+                                                <input type="radio" name="Sports" onClick={() => setSelectedSports("Running")} />
+                                                &nbsp; Running
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" name="Sports" onClick={() => setSelectedSports("Bicycling")} />
+                                                &nbsp; Cycling
+                                            </label> */}
+                                        </div>
+                                        <div class="control" className="mt-2 ml-2">
+                                            <label class="radio">
+                                                <input type="radio" name="Sports" onClick={() => setSelectedSports("Walking")} />
+                                                &nbsp; Walking
+                                            </label>
+                                            {/* <label class="radio">
+                                                <input type="radio" name="Sports" onClick={() => setSelectedSports("Jogging")} />
+                                                &nbsp; Jogging
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" name="Sports" onClick={() => setSelectedSports("Running")} />
+                                                &nbsp; Running
+                                            </label>
+                                            <label class="radio">
+                                                <input type="radio" name="Sports" onClick={() => setSelectedSports("Bicycling")} />
+                                                &nbsp; Cycling
+                                            </label> */}
+                                        </div>
+                                        <div class="control" className="mt-2 ml-2">
+                                            <label class="radio">
+                                                <input type="radio" name="Sports" onClick={() => setSelectedSports("Running")} />
+                                                &nbsp; Running
+                                            </label>
+                                            {/* <label class="radio">
+                                                <input type="radio" name="Sports" onClick={() => setSelectedSports("Bicycling")} />
+                                                &nbsp; Cycling
+                                            </label> */}
+                                        </div>
+                                        <div class="control" className="mt-2 ml-2">
+                                            {/* <label class="radio">
+                                                <input type="radio" name="Sports" onClick={() => setSelectedSports("Running")} />
+                                                &nbsp; Running
+                                            </label> */}
+                                            <label class="radio">
+                                                <input type="radio" name="Sports" onClick={() => setSelectedSports("Bicycling")} />
+                                                &nbsp; Cycling
+                                            </label>
+                                        </div>
+                                        
+                                    </div>
+                                    
                                     <div>
                                         <input
                                             ref={filePickerRef}
@@ -139,53 +241,30 @@ function Modal() {
                                             onChange={addImageToPost}
                                         />
                                     </div>
-                                    <div className="mt-2">
-                                        <input
-                                            className="border-none focus:ring-0 w-full text-center"
-                                            type="text"
-                                            ref={captionRef}
-                                            placeholder="Enter your caption here"
-                                        />
-                                    </div>
-
-                                    <div className="mt-2">
-                                        <input
-                                            className="border-none focus:ring-0 w-full text-center"
-                                            type="number"
-                                            ref={distanceRef}
-                                            placeholder="Enter distance (in miles)"
-                                        />
-                                    </div>
-
-                                    <div className="mt-2">
-                                        <input
-                                            className="border-none focus:ring-0 w-full text-center"
-                                            type="number"
-                                            ref={durationRef}
-                                            placeholder="Enter workout duration (in minutes_"
-                                        />
-                                    </div>
-
-                                    <div class="control" className="mt-3 sm:mt-6 text-center">
-                                        <label class="radio">
-                                            <input type="radio" name="Sports" onClick={() => setSelectedSports("Walking")} />
-                                            Walking
-                                        </label>
-                                        <label class="radio">
-                                            <input type="radio" name="Sports" onClick={() => setSelectedSports("Jogging")} />
-                                            Jogging
-                                        </label>
-                                        <label class="radio">
-                                            <input type="radio" name="Sports" onClick={() => setSelectedSports("Running")} />
-                                            Running
-                                        </label>
-                                        <label class="radio">
-                                            <input type="radio" name="Sports" onClick={() => setSelectedSports("Bicycling")} />
-                                            Cycling
-                                        </label>
-                                    </div>
-
                                 </div>
+
+                                <Dialog.Title
+                                as="h3"
+                                className="text-lg leading-6 font-medium text-gray-900 mt-3 mb-3"
+                                >
+                                    Upload Photo:
+                                </Dialog.Title>
+                                {selectedFile ? (
+                                    <img src={selectedFile}
+                                        className="w-full object-contain cursor-pointer"
+                                        onClick={() => setSelectedFile(null)}
+                                        alt="" />
+                                ) : (
+                                    <div
+                                        onClick={() => filePickerRef.current.click()}
+                                        className="mx-auto flex item-center justify-center h-12 w-12 rounded-full bg-red-100 cursor-pointer mb-6"
+
+                                    >
+                                        <FontAwesomeIcon icon="fa-solid fa-camera" size="3x" border/>                                        
+                                    </div>
+
+                                )}
+
                                 <div class="control" className="mt-5 sm:mt-6 text-center">
                                     <button
                                         disabled={!selectedFile}

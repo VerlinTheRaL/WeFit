@@ -34,12 +34,18 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "^5.0.0",
     "recoil": "^0.7.2",
+    "run-script-os": "^1.1.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "build:css": "postcss src/styles/tailwind.css -o src/styles/app.css",
     "watch:css": "postcss src/styles/tailwind.css -o src/styles/app.css --watch",
-    "react-scripts:start": "sleep 2 && react-scripts start",
+
+    "react-scripts:start": "run-script-os",
+    "react-scripts:start:windows": "timeout 2 && react-scripts start",
+    "react-scripts:start:macos": "sleep 2 && react-scripts start",
+    "react-scripts:start:default": "sleep 2 && react-scripts start",
+
     "react-scripts:dist": "react-scripts build",
     "start": "run-p watch:css react-scripts:start",
     "build": "run-s build:css react-scripts:dist",

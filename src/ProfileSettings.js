@@ -11,7 +11,7 @@ import UserContext from './context/user';
 import useUser from './hooks/use-user';
 import LoggedInUserContext from './context/logged-in-user';
 import { updateProfile, updateEmail, updatePassword } from 'firebase/auth'
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, collection, query, where, getDocs } from "firebase/firestore";
 import { doesUsernameExist } from './services/firebase';
 import { useState } from 'react'
 import { db } from './firebase'
@@ -48,7 +48,8 @@ function ProfileSettings() {
     if (!usernameExists) {
       try {
 
-        const newUsername = username !== "" ? username.toLowerCase() : user.username;
+        // const newUsername = username !== "" ? username.toLowerCase() : user.username;
+        const newUsername = username !== "" ? username : user.username;
         const newFullName = fullName !== "" ? fullName : user.fullName;
         const newWeight = weight !== "" ? weight : user.weight;
         const newEmail = email !== "" ? email : user.emailAddress;
@@ -62,6 +63,41 @@ function ProfileSettings() {
 
         // firebase user collection (create a document)
         const userRef = doc(db, "users", user.docId);
+
+        // firebase photos collection
+        const photosRef = collection(db, "photos");
+
+        // poster
+        const posterQuery = query(photosRef, where("username", "==", user.username));
+        const posterQuerySnapshot = await getDocs(posterQuery);
+
+        posterQuerySnapshot.forEach( async (posterDoc) => {
+
+          // console.log(posterDoc.id, " => ", posterDoc.data());
+
+          await updateDoc(posterDoc.ref,
+            {
+              username: newUsername,
+            });
+        
+        });
+
+        // comments
+        const commentsQuery = query(photosRef, where("displayName", "==", user.username));
+        const commentsQuerySnapshot = await getDocs(commentsQuery);
+
+        commentsQuerySnapshot.forEach( async (commentsDoc) => {
+
+          console.log(commentsDoc.id, " => ", commentsDoc.data());
+
+          // await updateDoc(posterDoc.ref,
+          //   {
+          //     username: newUsername,
+          //   });
+        
+        });
+
+
         await updateDoc(userRef,
           {
             username: newUsername,
@@ -70,7 +106,8 @@ function ProfileSettings() {
             emailAddress: user.emailAddress,
           });
 
-        navigate('/p/' + ( username !== "" ? username.toLowerCase() : user.username ))
+        // navigate('/p/' + ( username !== "" ? username.toLowerCase() : user.username ));
+        navigate('/p/' + ( username !== "" ? username : user.username ))
 
       } catch (error) {
         setFullName('');

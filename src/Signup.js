@@ -47,7 +47,8 @@ function Signup() {
         await addDoc(collection(db, 'users'),
           {
             userId: auth.currentUser.uid,
-            username: username.toLowerCase(),
+            // username: username.toLowerCase(),
+            username: username,
             fullName: '',
             weight: '',
             emailAddress: email.toLowerCase(),

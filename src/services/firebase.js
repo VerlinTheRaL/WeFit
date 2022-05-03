@@ -2,13 +2,15 @@ import { db } from '../firebase';
 import { collection, query, where, limit, getDocs, doc, updateDoc, arrayUnion, arrayRemove, orderBy } from "firebase/firestore";
 
 export async function doesUsernameExist(username) {
-  const result = query(collection(db, 'users'), where('username', '==', username.toLowerCase()));
+  // const result = query(collection(db, 'users'), where('username', '==', username.toLowerCase()));
+  const result = query(collection(db, 'users'), where('username', '==', username));
   const q_doc = await getDocs(result)
   return q_doc.docs.length > 0;
 }
 
 export async function getUserByUsername(username) {
-  const result = query(collection(db, 'users'), where('username', '==', username.toLowerCase()));
+  // const result = query(collection(db, 'users'), where('username', '==', username.toLowerCase()));
+  const result = query(collection(db, 'users'), where('username', '==', username));
   const q_doc = await getDocs(result)
   return q_doc.docs.map((item) => ({
     ...item.data(),

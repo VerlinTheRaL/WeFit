@@ -26,19 +26,35 @@ export default function Scores({ calories, activity, popularity }) {
     const popularity_progress = popularity / 10;
     const total = calorie_progress + activity_progress + popularity_progress;
     const min = Math.min(calorie_progress, activity_progress, popularity_progress);
+    const max = Math.max(calorie_progress, activity_progress, popularity_progress);
     var weakness = 'Null';
-    switch (min) {
+    var strength = 'Null';
+    switch (max) {
         case popularity_progress:
-            weakness = 'Popularity of posts';
+            strength = "Good job, you're really engaging with your friends this week! Healthy competition is great for keeping you motivated!";
             break;
         case activity_progress:
-            weakness = 'Exercise frequency';
+            strength = "Good job, you've already completed a ton of workouts this week! Let's keep up that pace and finish the week strong!";
             break;
         case calorie_progress:
-            weakness = 'Calorie burned during exercise';
+            strength = "Good job, you're burning a lot of calories this week! Keep going and get that beach body!";
             break;
         default:
-            weakness = 'Nothing';
+            strength = "Let's get some workouts going!";
+            break;
+    }
+    switch (min) {
+        case popularity_progress:
+            weakness = "And it would be awesome if you could engage with your friends a little more! Having a little healthy competetition is great for keeping you motivated!";
+            break;
+        case activity_progress:
+            weakness = "And it would be awesome if you aim to complete a few more workouts this week! Consistency is key to long-term fitness!";
+            break;
+        case calorie_progress:
+            weakness = "And it would be awesome if you push yourself a little longer and harder each workout! Remember that sweat is just fats crying!";
+            break;
+        default:
+            weakness = "Don't give up!";
             break;
     }
 
@@ -46,7 +62,7 @@ export default function Scores({ calories, activity, popularity }) {
     var week = getWeekNumber(new Date());
     const data = {
         labels: [
-            'Fitness Score', 'Activity Score', 'Popularity Score'
+            'Calories Burnt', 'Workouts Completed', 'Social Activity'
         ],
         datasets: [
             {
@@ -54,9 +70,9 @@ export default function Scores({ calories, activity, popularity }) {
                     calorie_progress / (total), activity_progress / (total), popularity_progress / (total)
                 ],
                 backgroundColor: [
-                    '#00d1b2', '#3e8ed0', '#485fc7'
+                    '#209cee', '#ffdd57', '#ff3860'
                 ],
-                hoverBackgroundColor: ['#00d1b2', '#3e8ed0', '#485fc7']
+                hoverBackgroundColor: ['#209cee', '#ffdd57', '#ff3860']
             }
         ]
     };
@@ -80,16 +96,16 @@ export default function Scores({ calories, activity, popularity }) {
             <div class="column">
                 <div class="card">
                     <div class="card-content skills-content">
-                        <h3 class="title is-4">Check out your scores for this week!</h3>
+                        <h3 class="title is-4 mb-6">Weekly Workout Score:</h3>
                         <div class="content">
 
                             <article class="media">
                                 <div class="media-content">
                                     <div class="content">
                                         <p>
-                                            <strong>Fitness Score</strong>
+                                            <strong>Calories Burnt</strong>
                                             <br />
-                                            <progress class="progress is-primary" value={calories} max="500"></progress>
+                                            <progress class="progress is-info" value={calories} max="500"></progress>
                                         </p>
                                     </div>
                                 </div>
@@ -99,9 +115,9 @@ export default function Scores({ calories, activity, popularity }) {
                                 <div class="media-content">
                                     <div class="content">
                                         <p>
-                                            <strong>Activity Score</strong>
+                                            <strong>Workouts Completed</strong>
                                             <br />
-                                            <progress class="progress is-info" value={activity} max="10"></progress>
+                                            <progress class="progress is-warning" value={activity} max="10"></progress>
                                         </p>
                                     </div>
                                 </div>
@@ -111,37 +127,13 @@ export default function Scores({ calories, activity, popularity }) {
                                 <div class="media-content">
                                     <div class="content">
                                         <p>
-                                            <strong>Popularity Score</strong>
+                                            <strong>Social Activity</strong>
                                             <br />
-                                            <progress class="progress is-link" value={popularity} max="10"></progress>
+                                            <progress class="progress is-danger" value={popularity} max="10"></progress>
                                         </p>
                                     </div>
                                 </div>
                             </article>
-
-                            {/* <article class="media">
-                                <div class="media-content">
-                                    <div class="content">
-                                        <p>
-                                            <strong>Other Score</strong>
-                                            <br />
-                                            <progress class="progress is-warning" value="95" max="100"></progress>
-                                        </p>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="media">
-                                <div class="media-content">
-                                    <div class="content">
-                                        <p>
-                                            <strong>Other Score</strong>
-                                            <br />
-                                            <progress class="progress is-danger" value="66" max="100"></progress>
-                                        </p>
-                                    </div>
-                                </div>
-                            </article> */}
                         </div>
                     </div>
                 </div>
@@ -157,11 +149,14 @@ export default function Scores({ calories, activity, popularity }) {
                             </div>
 
                             <div class="column is-6">
-                                <h1 class="title is-2 mb-6">
-                                    Proportion of Each Score
+                                <h1 class="title is-4 mb-6">
+                                    Weekly Workout Score Analysis
                                 </h1>
                                 <h2 class="subtitle">
-                                    Track all the compositions of training this week &#8212; try to achieve a balanced training style! {weakness} is your weakness at present.
+                                    {strength}
+                                </h2>
+                                <h2 class="subtitle">
+                                    {weakness}
                                 </h2>
                             </div>
                         </div>
