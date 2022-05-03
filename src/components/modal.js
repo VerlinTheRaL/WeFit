@@ -42,7 +42,10 @@ function Modal() {
             caption: captionRef.current.value,
             userId: auth.currentUser.uid,
             likes: [],
-            comments: [],
+            comments: {
+                displayName: [],
+                comment: [],
+            },
             // profileImg: auth.currentUser.imageSrc,
             dateCreated: Date.now()
         })

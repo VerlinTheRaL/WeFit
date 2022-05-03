@@ -12,17 +12,33 @@ export default function Comments({ docId, comments: allComments, posted, comment
     setCommentsSlice(commentsSlice + 3);
   };
 
+  const arrOfDisplayNames = comments.displayName;
+  const arrOfComments = comments.comment;
+
+  const displayNameSlice = arrOfDisplayNames.slice(0, commentsSlice);
+  const commentSlice = arrOfComments.slice(0, commentsSlice);
+
+  const commentsMapped = displayNameSlice.map((displayName, i) => { return [displayName, commentSlice[i]] });
+
   return (
     <>
       <div className="p-4 pt-1 pb-4">
-        {comments.slice(0, commentsSlice).map((item) => (
+        {commentsMapped.map((item) => (
+          <p key={`${item[1]}-${item[0]}`} className="mb-1">
+            <Link to={`/p/${item[0]}`}>
+              <span className="mr-1 font-bold">{item[0]}</span>
+            </Link>
+            <span>{item[1]}</span>
+          </p>
+        ))}
+        {/* {comments.slice(0, commentsSlice).map((item) => (
           <p key={`${item.comment}-${item.displayName}`} className="mb-1">
             <Link to={`/p/${item.displayName}`}>
               <span className="mr-1 font-bold">{item.displayName}</span>
             </Link>
             <span>{item.comment}</span>
           </p>
-        ))}
+        ))} */}
         {comments.length >= 3 && commentsSlice < comments.length && (
           <button
             className="text-sm text-gray-base mb-1 cursor-pointer focus:outline-none"
@@ -53,7 +69,11 @@ export default function Comments({ docId, comments: allComments, posted, comment
 
 Comments.propTypes = {
   docId: PropTypes.string.isRequired,
-  comments: PropTypes.array.isRequired,
+  // comments: PropTypes.array.isRequired,
+  comments: PropTypes.shape({
+    displayName: PropTypes.array.isRequired,
+    comment: PropTypes.array.isRequired,
+  }),
   posted: PropTypes.number.isRequired,
   commentInput: PropTypes.object.isRequired
 };

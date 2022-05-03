@@ -130,7 +130,7 @@ function ProfileSettings() {
 
         <nav class="navbar is-light" role="navigation" aria-label="main navigation">
           <div class="navbar-brand">
-            <a class="navbar-item" href="/">
+            <a class="navbar-item" href="/dashboard">
               <FontAwesomeIcon icon="fa-solid fa-dumbbell" /> &nbsp; <strong>WeFit</strong>
             </a>
           </div>

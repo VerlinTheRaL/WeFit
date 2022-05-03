@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import FirebaseContext from '../../context/firebase';
 import UserContext from '../../context/user';
@@ -15,15 +15,39 @@ export default function AddComment({ docId, comments, setComments, commentInput 
   const handleSubmitComment = (event) => {
     event.preventDefault();
 
-    setComments([...comments, { displayName, comment }]);
-    setComment('');
+    setComments({
+      displayName: [...comments.displayName, displayName],
+      comment: [...comments.comment, comment],
+     });
+    // setComments([...comments, { displayName, comment }]);
 
-    const PhotosRef = doc(db, "photos", docId);
-    return updateDoc(PhotosRef, {
-      comments:
-        arrayUnion({ displayName, comment })
-    });
+    // const PhotosRef = doc(db, "photos", docId);
+
+    // return updateDoc(PhotosRef, {
+    //   comments: {
+    //     displayName: comments.displayName,
+    //     comment: comments.comment,
+    //   }
+    //   // comments:
+    //   //   arrayUnion({ displayName, comment })
+    // });
   };
+
+  useEffect(() => {
+    if(comment != ''){
+      setComment('');
+      const PhotosRef = doc(db, "photos", docId);
+      console.log("comments: " + comments.comment);
+      updateDoc(PhotosRef, {
+        comments: {
+          displayName: comments.displayName,
+          comment: comments.comment,
+        }
+        // comments:
+        //   arrayUnion({ displayName, comment })
+      });
+    }
+  }, [comments]);
 
   return (
     <div className="border-t border-gray-primary">
@@ -60,7 +84,11 @@ export default function AddComment({ docId, comments, setComments, commentInput 
 
 AddComment.propTypes = {
   docId: PropTypes.string.isRequired,
-  comments: PropTypes.array.isRequired,
+  // comments: PropTypes.array.isRequired,
+  comments: PropTypes.shape({
+    displayName: PropTypes.array.isRequired,
+    comment: PropTypes.array.isRequired,
+  }),
   setComments: PropTypes.func.isRequired,
   commentInput: PropTypes.object
 };

@@ -8,14 +8,14 @@ import Post from './post';
 export default function Timeline() {
 
     const { user } = useContext(LoggedInUserContext);
-    console.log(user);
+    // console.log(user);
 
     const { user: { following } = {} } = useContext(
         LoggedInUserContext
     );
 
     const { photos } = usePhotos(user);
-    console.log('photo ID: ', photos);
+    // console.log('photo ID: ', photos);
 
     return (
         <div className="container col-span-2">

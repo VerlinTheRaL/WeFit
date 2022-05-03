@@ -43,7 +43,8 @@ export default function Photos({ photos }) {
                         clipRule="evenodd"
                       />
                     </svg>
-                    {photo.comments.length}
+                    {/* {photo.comments.length} */}
+                    {photo.comments.displayName.length}
                   </p>
                 </div>
               </div>
