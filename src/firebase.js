@@ -4,8 +4,6 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 import { getPerformance } from "firebase/performance";
 
-import { seedDatabase } from "./seed";
-
 // wefit config
 const firebaseConfig = {
   apiKey: "AIzaSyB7bwwpilOaMu7PQermajiVyAnK7PLazQM",
@@ -23,6 +21,4 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 const perf = getPerformance(app);
 
-// This only needs to be ran once to manually add some test users to db
-// seedDatabase(db);
 export { app, auth, db, storage };
