@@ -47,11 +47,11 @@ function App() {
               <Route path='/dashboard' element = {<ProtectedRoute user={user}/>}>
                 <Route path="/dashboard" element={<Dashboard user={user}/>} />
               </Route>
-              <Route path='/p/:username' element = {<ProtectedRoute user={user}/>}>
-                <Route path="/p/:username" element={<Profile user={user}/>} />
+              <Route path='/p-:username' element = {<ProtectedRoute user={user}/>}>
+                <Route path="/p-:username" element={<Profile user={user}/>} />
               </Route>
-              <Route path='/psettings/:username' element = {<ProtectedRoute user={user}/>}>
-                <Route path="/psettings/:username" element={<ProfileSettings user={user}/>} />
+              <Route path='/psettings-:username' element = {<ProtectedRoute user={user}/>}>
+                <Route path="/psettings-:username" element={<ProfileSettings user={user}/>} />
               </Route>
               <Route path="/" element={<Landing />} />
               <Route path="*" element={<Landing />} />

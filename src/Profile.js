@@ -55,8 +55,8 @@ export default function Profile() {
                                 <div class="dropdown-menu" id="dropdown-menu4" role="menu">
                                 <div class="dropdown-content">
                                     <a class="dropdown-item has-text-dark has-text-weight-bold" href="/dashboard">Dashboard</a>
-                                    <a class="dropdown-item has-text-dark has-text-weight-bold" href={`/p/${user.username}`}>Profile</a>
-                                    <a class="dropdown-item has-text-dark has-text-weight-bold" href={`/psettings/${user.username}`}>Settings</a>
+                                    <a class="dropdown-item has-text-dark has-text-weight-bold" href={`/p-${user.username}`}>Profile</a>
+                                    <a class="dropdown-item has-text-dark has-text-weight-bold" href={`/psettings-${user.username}`}>Settings</a>
                                     <a class="dropdown-item has-text-danger has-text-weight-bold" onClick={() => signOut(auth)} href="/login">Sign out</a>
                                 </div>
                                 </div>

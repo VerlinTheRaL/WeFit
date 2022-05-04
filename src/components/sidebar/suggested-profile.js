@@ -37,7 +37,7 @@ export default function SuggestedProfile({
             e.target.src = `/images/avatars/default.png`;
           }}
         />
-        <Link to={`/p/${username}`}>
+        <Link to={`/p-${username}`}>
           <p className="font-bold text-sm">{username}</p>
         </Link>
       </div>

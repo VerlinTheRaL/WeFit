@@ -27,7 +27,7 @@ export default function Comments({ docId, comments: allComments, posted, comment
       <div className="p-4 pt-1 pb-4">
         {commentsMapped.map((item) => (
           <p key={`${item[1]}-${item[0]}`} className="mb-1">
-            <Link to={`/p/${item[0]}`}>
+            <Link to={`/p-${item[0]}`}>
               <span className="mr-1 font-bold">{item[0]}</span>
             </Link>
             <span>{item[1]}</span>
