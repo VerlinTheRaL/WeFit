@@ -50,8 +50,8 @@ function App() {
               <Route path='/p/:username' element = {<ProtectedRoute user={user}/>}>
                 <Route path="/p/:username" element={<Profile user={user}/>} />
               </Route>
-              <Route path='/settings/:username' element = {<ProtectedRoute user={user}/>}>
-                <Route path="/settings/:username" element={<ProfileSettings user={user}/>} />
+              <Route path='/psettings/:username' element = {<ProtectedRoute user={user}/>}>
+                <Route path="/psettings/:username" element={<ProfileSettings user={user}/>} />
               </Route>
               <Route path="/" element={<Landing />} />
               <Route path="*" element={<Landing />} />
