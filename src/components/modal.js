@@ -11,8 +11,6 @@ import { db, storage, auth } from "../firebase"
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { ref, getDownloadURL, uploadString } from "firebase/storage";
 
-import { useNavigate } from 'react-router-dom'
-
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
@@ -27,7 +25,6 @@ function Modal() {
     const distanceRef = useRef(null);
     const durationRef = useRef(null);
 
-    const navigate = useNavigate()
     const uploadPost = async () => {
         if (loading) return;
         setLoading(true);
@@ -59,7 +56,7 @@ function Modal() {
             dateCreated: serverTimestamp()
         })
 
-        console.log("New doc added with ID", docRef.id);
+        // console.log("New doc added with ID", docRef.id);
 
         const imageRef = ref(storage, `posts/${docRef.id}/image`);
         await uploadString(imageRef, selectedFile, "data_url").then(
@@ -70,9 +67,16 @@ function Modal() {
                 });
             });
 
+        
         SetOpen(false);
         setLoading(false);
         setSelectedFile(null);
+    }
+
+    function uploadPostWrapper(){
+        uploadPost().then( _ => {
+            window.location.reload(false);
+        })
     }
 
     const addImageToPost = (e) => {
@@ -272,7 +276,7 @@ function Modal() {
                                     <button
                                         disabled={!selectedFile}
                                         class="button is-primary"
-                                        onClick={uploadPost}
+                                        onClick={uploadPostWrapper}
                                     >
                                         {loading ? "Uploading..." : "Upload Post"}
                                     </button>
